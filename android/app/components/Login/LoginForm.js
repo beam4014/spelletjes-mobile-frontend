@@ -1,20 +1,59 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import {Alert, StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 export default class LoginForm extends Component{
-   render(){
+    
+   handlePressButton=()=>{
+       axios.post('http://localhost:8000/oauth/token', {
+                grant_type: 'password',
+                client_id: '2',
+                client_secret: '2eVoCJN46QDFaSYbUBI0RzD9ncs7YFr9Trus3GaF',
+                username: 'b@b.com',
+                password: 'secret',
+                scope: ''
+            })
+            .then(response => {
+            console.log(response);
+            })
+            .catch(error => {
+           console.log(error);
+            });
+   }
+    render(){
    return(
    <View style={styles.container}>
        <TextInput
        placeholder="username or email"
        placeholderTextColor ="rgba(255,255,255,0.7)"
+       returnKeyType="next"
+       onSubmitEditing={() => this.passwordInput.focus()}
+       keyboardType="email-address"
+       autoCapitalize="none"
+       autoCorrect={false}
+       onChangeText={
+           (text) => {
+           this.setState((previousState) =>{return {userText: text};});
+       }
+       }
        style = {styles.input}/>
        <TextInput
        placeholderTextColor ="rgba(255,255,255,0.7)"
        placeholder="password"
-       style = {styles.input}/>
-       <Button
-       title="LOGIN"
-       color="#841584"/>
+       returnKeyType="go"
+       secureTextEntry
+       style = {styles.input}
+       ref={(input)=> this.passwordInput = input}
+              onChangeText={
+           (text) => {
+           this.setState((previousState) =>{return {passwordText: text};});
+       }
+       }/>
+       <TouchableOpacity style = {styles.buttonContainer}
+           onPress={this.handlePressButton}
+        underlayColor="blue">
+       <Text style = {styles.buttonText}>LOGIN</Text>
+       
+</TouchableOpacity>
    </View>
    );
   }
@@ -41,7 +80,5 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontWeight: '700',
     },
-    onPressLearnMore:{
-        
-    }
+
 });
