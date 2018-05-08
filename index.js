@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { AppRegistry, StyleSheet, Text, View ,StatusBar} from 'react-native';
-import Login from './android/app/components/Login/Login';
+import Login from './src/components/Login/Login';
 
 export default class Spelletjes extends Component{
     render(){
