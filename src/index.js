@@ -1,7 +1,10 @@
-import { Navigation } from 'react-native-navigation';
 import { YellowBox } from 'react-native';
-import { Screens, startApp } from 'screens';
-import Store, { getProvider } from 'store';
+import { Provider } from 'react-redux';
+
+import configureStore from '../src/store/configureStore';
+
+import { registerScreens } from '../src/navigation/screens';
+import {startApp, startLogin} from '../src/navigation/AppNavigator';
 
 // These will still be logged out to Developer Tools
 YellowBox.ignoreWarnings([
@@ -11,24 +14,10 @@ YellowBox.ignoreWarnings([
   'Module RCTImageLoader requires main queue setup',
 ]);
 
-const store = new Store();
+const store = configureStore();
 
-(async () => {
+registerScreens(store, Provider);
 
-  // Get provider
-  const Provider = await getProvider(store);
+// startLogin();
 
-  // Register screens
-  Array.from(Screens.entries()).forEach(([screenConst, screenModule]) =>
-    Navigation.registerComponent(
-      screenConst,
-      screenModule,
-      store,
-      Provider,
-    ));
-
-  store
-    .setup()
-    .then(startApp);
-
-})();
+startApp();
