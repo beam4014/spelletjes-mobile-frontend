@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import { AppRegistry, StyleSheet, Text, View ,StatusBar} from 'react-native';
+
 import Login from './src/components/Login/Login';
 
 export default class Spelletjes extends Component{
+    static navigationOptions = {
+        title: 'Home',
+    }
     render(){
+
         return(
          <View style={styles.container}>
             <StatusBar
@@ -25,4 +30,5 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     }
 });
+
 AppRegistry.registerComponent('spelletjes',() => Spelletjes);

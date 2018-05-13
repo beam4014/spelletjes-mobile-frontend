@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
 import LoginForm from './LoginForm'; 
 export default class Login extends Component{
     render(){
@@ -40,5 +40,6 @@ title: {
  width: 160,
  textAlign: 'center',                         
  opacity: 0.7      
-}
-                                  });
+    }
+});
+AppRegistry.registerComponent('Login',() => Login);

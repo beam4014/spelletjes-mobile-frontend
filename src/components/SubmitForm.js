@@ -5,18 +5,18 @@ import FlatList from './src/components/FlatList';
 export default class LoginForm extends Component{
     
    handlePressButton=()=>{
-       axios.post('http://10.0.2.2:8000/oauth/token', {
-                grant_type: 'password',
-                client_id: '2',
-                client_secret: '2eVoCJN46QDFaSYbUBI0RzD9ncs7YFr9Trus3GaF',
-                username: 'b@b.com',
-                password: 'secret',
-                scope: ''
+       axios.post('http://10.0.2.2:8000/api/listings/create', {
+            headers: { Authorization: '2eVoCJN46QDFaSYbUBI0RzD9ncs7YFr9Trus3GaF',
+                title: 'Mario Bros.',
+                game_id: '2',
+                type: 'sell',
+                price: '65',
+                description: 'description of this game',
             })
             .then(response => {
             response.data.access_token
             console.warn(response);
-            navigate('FlatList');
+             navigate('FlatList');
             })
             .catch(error => {
                 console.log(error);
@@ -27,13 +27,10 @@ export default class LoginForm extends Component{
    return(
    <View style={styles.container}>
        <TextInput
-       placeholder="username or email"
+       placeholder="title"
        placeholderTextColor ="rgba(255,255,255,0.7)"
        returnKeyType="next"
-       onSubmitEditing={() => this.passwordInput.focus()}
-       keyboardType="email-address"
-       autoCapitalize="none"
-       autoCorrect={false}
+       onSubmitEditing={() => this.titleInput.focus()}
        onChangeText={
            (text) => {
            this.setState((previousState) =>{return {userText: text};});
@@ -42,20 +39,32 @@ export default class LoginForm extends Component{
        style = {styles.input}/>
        <TextInput
        placeholderTextColor ="rgba(255,255,255,0.7)"
-       placeholder="password"
+       placeholder="price"
        returnKeyType="go"
        secureTextEntry
        style = {styles.input}
-       ref={(input)=> this.passwordInput = input}
+       ref={(input)=> this.priceInput = input}
               onChangeText={
            (text) => {
-           this.setState((previousState) =>{return {passwordText: text};});
+           this.setState((previousState) =>{return {priceText: text};});
        }
        }/>
+              <TextInput
+       placeholderTextColor ="rgba(255,255,255,0.7)"
+       placeholder="description"
+       returnKeyType="go"
+       style = {styles.input}
+       ref={(input)=> this.descriptionInput = input}
+              onChangeText={
+           (text) => {
+           this.setState((previousState) =>{return {descriptionText: text};});
+       }
+       }/>
+       
        <TouchableOpacity style = {styles.buttonContainer}
            onPress={this.handlePressButton}
         underlayColor="blue">
-       <Text style = {styles.buttonText}>LOGIN</Text>
+       <Text style = {styles.buttonText}>SUBMIT</Text>
        
 </TouchableOpacity>
    </View>
@@ -77,7 +86,6 @@ const styles = StyleSheet.create({
     buttonContainer:{
      backgroundColor:'#34495e',
      paddingVertical: 15,
-        
 },
     buttonText:{
         textAlign: 'center',
@@ -86,5 +94,7 @@ const styles = StyleSheet.create({
     },
 
 });
+
+const AuthStr = 'Bearer '.concat(USER_TOKEN);
 
 AppRegistry.registerComponent('LoginForm',() => LoginForm);
