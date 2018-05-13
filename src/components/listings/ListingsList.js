@@ -8,11 +8,15 @@ class ListingsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.renderRow = this.renderRow.bind(this);
     this.onPressListing = this.onPressListing.bind(this);
   }
-  onPressListing(id) {
-
+  onPressListing(listing) {
+    this.props.navigator.push({
+      screen: 'screen.ListingScreen',
+      passProps: {
+        listing,
+      },
+    });
   }
   render() {
     return (
@@ -20,7 +24,11 @@ class ListingsList extends React.Component {
         <ListView
           items={this.props.listings}
           renderRow={
-            (listing) => <ListingRow listing={listing} onPress={() => this.onPressListing(listing.id)} />
+            listing =>
+              (<ListingRow
+                listing={listing}
+                onPress={() => this.onPressListing(listing)}
+              />)
           }
         />
       </View>
@@ -37,6 +45,7 @@ const styles = StyleSheet.create({
 
 ListingsList.propTypes = {
   listings: PropTypes.array.isRequired,
+  navigator: PropTypes.object.isRequired,
 };
 
 export default ListingsList;
