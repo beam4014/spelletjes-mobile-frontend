@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
-import LoginForm from './LoginForm'; 
+import LoginForm from './LoginForm';
+
 export default class Login extends Component{
     render(){
         return(
@@ -42,4 +43,3 @@ title: {
  opacity: 0.7      
     }
 });
-AppRegistry.registerComponent('Login',() => Login);
