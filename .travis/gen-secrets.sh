@@ -1,7 +1,7 @@
 # Pack files
 FILES=(
     ".travis/id_rsa"
-    "ios/react-native-starter/GoogleService-Info.plist"
+    "ios/Spelletjes/GoogleService-Info.plist"
     "android/keystores/release.keystore"
     "android/playstore.json"
     "android/app/google-services.json"

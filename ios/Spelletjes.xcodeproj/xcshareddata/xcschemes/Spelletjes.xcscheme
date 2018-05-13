@@ -17,7 +17,7 @@
                BlueprintIdentifier = "E3AAD4501F573E3700B7831D"
                BuildableName = "build-env"
                BlueprintName = "build-env"
-               ReferencedContainer = "container:react-native-starter.xcodeproj">
+               ReferencedContainer = "container:Spelletjes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "react-native-starter.app"
-               BlueprintName = "react-native-starter"
-               ReferencedContainer = "container:react-native-starter.xcodeproj">
+               BuildableName = "Spelletjes.app"
+               BlueprintName = "Spelletjes"
+               ReferencedContainer = "container:Spelletjes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,9 +48,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "react-native-starter.app"
-            BlueprintName = "react-native-starter"
-            ReferencedContainer = "container:react-native-starter.xcodeproj">
+            BuildableName = "Spelletjes.app"
+            BlueprintName = "Spelletjes"
+            ReferencedContainer = "container:Spelletjes.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "react-native-starter.app"
-            BlueprintName = "react-native-starter"
-            ReferencedContainer = "container:react-native-starter.xcodeproj">
+            BuildableName = "Spelletjes.app"
+            BlueprintName = "Spelletjes"
+            ReferencedContainer = "container:Spelletjes.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -91,9 +91,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "react-native-starter.app"
-            BlueprintName = "react-native-starter"
-            ReferencedContainer = "container:react-native-starter.xcodeproj">
+            BuildableName = "Spelletjes.app"
+            BlueprintName = "Spelletjes"
+            ReferencedContainer = "container:Spelletjes.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

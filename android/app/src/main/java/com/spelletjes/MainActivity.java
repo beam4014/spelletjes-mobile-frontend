@@ -1,4 +1,4 @@
-package com.ueno.reactnativestarter;
+package com.spelletjes;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 

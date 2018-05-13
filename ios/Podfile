@@ -1,6 +1,6 @@
 platform :ios, '9.0'
 
-target 'react-native-starter' do
+target 'Spelletjes' do
 
   pod 'Firebase/Core'
 
