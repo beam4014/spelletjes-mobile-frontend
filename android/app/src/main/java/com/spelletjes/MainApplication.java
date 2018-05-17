@@ -5,10 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.reactnativenavigation.NavigationApplication;
-import com.microsoft.codepush.react.CodePush;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import io.invertase.firebase.RNFirebasePackage;
-import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.sentry.RNSentryPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 
@@ -31,10 +28,6 @@ public class MainApplication extends NavigationApplication {
         MultiDex.install(this);
     }
 
-    @Override
-    public String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
 
     @Override
     public boolean isDebug() {
@@ -43,12 +36,9 @@ public class MainApplication extends NavigationApplication {
 
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-          new CodePush(BuildConfig.ANDROID_CODEPUSH_DEPLOYMENT_KEY, MainApplication.this, BuildConfig.DEBUG),
           new ReactNativeConfigPackage(),
           new RNSentryPackage(MainApplication.this),
-          new BlurViewPackage(),
-          new RNFirebasePackage(),
-          new RNFirebaseAnalyticsPackage()
+          new BlurViewPackage()
         );
     }
 

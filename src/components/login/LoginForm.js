@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
 
     this.onChangeTextPassword = this.onChangeTextPassword.bind(this);
     this.onChangeTextUsername = this.onChangeTextUsername.bind(this);
-    this.handlePressButton = this.handlePressButton.bind(this);
+    this.onPressLogin = this.onPressLogin.bind(this);
   }
   onChangeTextUsername(text) {
     this.setState({
@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
       password: text,
     });
   }
-  handlePressButton() {
+  onPressLogin() {
     this.setState({
       loading: true,
     });
@@ -49,6 +49,7 @@ class LoginForm extends React.Component {
         }
       });
   }
+
 
   render() {
 
@@ -80,11 +81,14 @@ class LoginForm extends React.Component {
         />
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={this.handlePressButton}
+          onPress={this.onPressLogin}
           underlayColor="blue"
         >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
+        <Text
+
+        />
       </KeyboardAwareScrollView>
     );
   }
@@ -115,7 +119,6 @@ const styles = StyleSheet.create({
 });
 
 LoginForm.propTypes = {
-  token: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
 };
 

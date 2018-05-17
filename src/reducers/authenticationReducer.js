@@ -18,6 +18,22 @@ export default function authenticationReducer(state = {}, action) {
           token: null,
         },
       );
+    case types.REGISTER_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          register: true,
+        }
+      );
+    case types.REGISTER_FAILED:
+      return Object.assign(
+        {},
+        state,
+        {
+          register: false,
+        }
+      );
     default:
       return state;
   }

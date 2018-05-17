@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as types from './listingsTypes';
+import {URL_API} from "../url";
 
 
 //fetch listing
@@ -16,7 +17,7 @@ function fetchListingFailed() {
 }
 export function fetchListing() {
   return function (dispatch) {
-    return axios.get('http://localhost:8000/api/listings')
+    return axios.get(`${URL_API}listings`)
       .then(response => dispatch(fetchListingSuccessful(response.data)))
       .catch(error => dispatch(fetchListingFailed()));
   };
@@ -36,7 +37,7 @@ function submitListingFailed() {
 }
 export function submitListing(title,game_id,type,price,description) {
   return function (dispatch) {
-    return axios.post('localhost:8000/api/listings/create',{
+    return axios.post(`${URL_API}listings/create`,{
       title,
       game_id,
       type,

@@ -12,8 +12,11 @@ class ListingRow extends React.Component {
       >
         <Text style={styles.text}>{this.props.listing.title}</Text>
         <Text style={styles.text}>Type: {this.props.listing.type}</Text>
-        <Text style={styles.text}>Price: {this.props.listing.asking_price.toString()}</Text>
-
+        {
+          this.props.listing.asking_price
+          ? <Text style={styles.text}>Price: {this.props.listing.asking_price.toString()}</Text>
+            : false
+        }
       </TouchableOpacity>
     );
   }
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#e67e22',
+    marginBottom: 5,
   },
   text: {
     color: '#fff',

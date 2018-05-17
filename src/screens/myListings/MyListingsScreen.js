@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/myListings/myListingsActions';
 import ListingsList from '../../components/listings/ListingsList';
 
-class ListingsScreen extends React.Component {
+class MyListingsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,4 +55,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MyListingsScreen);

@@ -7,6 +7,7 @@ const appReducer = combineReducers({
   authentication,
   listings,
   myListings,
+
 });
 
 export default appReducer;

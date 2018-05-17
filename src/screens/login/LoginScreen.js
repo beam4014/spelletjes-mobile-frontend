@@ -1,8 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import LoginForm from '../../components/login/LoginForm';
 
 export default class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onPressGoToRegisterScreen = this.onPressGoToRegisterScreen.bind(this);
+  }
+
+  onPressGoToRegisterScreen() {
+    this.props.navigator.push({
+      screen: 'screen.RegisterScreen',
+      title: 'Register',
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -15,6 +28,14 @@ export default class Login extends React.Component {
         </View>
         <View style={styles.container}>
           <LoginForm />
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={this.onPressGoToRegisterScreen}
+          >
+            <Text style={styles.registerButtonText}>
+              Don't have an account yet? Register!
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -43,4 +64,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     opacity: 0.7,
   },
+  registerButton: {
+    padding: 10,
+    backgroundColor: '#ccc',
+  },
+  registerButtonText: {
+    fontSize: 15,
+    color: '#fff'
+  }
 });

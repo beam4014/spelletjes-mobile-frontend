@@ -14,6 +14,8 @@ YellowBox.ignoreWarnings([
   'Module RCTImageLoader requires main queue setup',
 ]);
 
+console.disableYellowBox = true;
+
 const store = configureStore();
 
 registerScreens(store, Provider);
