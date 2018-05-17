@@ -18,6 +18,22 @@ export default function fetchListingReducer(state = {}, action) {
           data: [],
         },
       );
+    case types.SUBMIT_LISTING_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          submittedListing: true,
+        }
+      );
+    case types.SUBMIT_LISTING_FAILED:
+      return Object.assign(
+        {},
+        state,
+        {
+          submittedListing: false,
+        }
+      );
     default:
       return state;
   }
