@@ -40,11 +40,12 @@ export function authenticate(username, password) {
       });
   };
 }
+
 //register actions
-export function register(name, password, confirmPassword, email,phoneNo) {
+export function register(name, email, password, confirmPassword, phoneNo) {
   return function (dispatch) {
     return axios.post(`${URL_API}register`, {
-      name: name,
+      name,
       password,
       email,
       password_confirmation: confirmPassword,

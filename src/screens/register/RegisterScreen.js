@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import RegisterForm from "../../components/register/RegisterForm";
-import * as authenticationAction from "../../actions/authentication/authenticationActions";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import Spinner from "react-native-loading-spinner-overlay";
+import RegisterForm from '../../components/register/RegisterForm';
+import * as authenticationAction from '../../actions/authentication/authenticationActions';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class RegisterScreen extends React.Component {
   constructor(props) {
@@ -15,27 +15,30 @@ class RegisterScreen extends React.Component {
     this.onPressRegister = this.onPressRegister.bind(this);
   }
 
-  onPressRegister(name, email, password, phoneNumber) {
-    this.setState({loading: !this.state.loading});
-    this.props.register(name, email, password, phoneNumber).then(() => {
-      this.setState({loading: !this.state.loading}); // stop showing loading
-      if (this.props.isRegistered) { // check if user is registered using the state registered in redux
-        setTimeout(() => {
-          this.props.navigator.pop(); // go back to login page
+  onPressRegister(name, email, password, passwordConfirmation, phoneNumber) {
+    this.setState({ loading: !this.state.loading });
+    setTimeout(() => {
+      this.props.register(name, email, password, passwordConfirmation, phoneNumber).then(() => {
+        this.setState({ loading: !this.state.loading }); // stop showing loading
+        // check if user is registered using the state registered in redux
+        if (this.props.isRegistered) {
           setTimeout(() => {
-            Alert.alert(
-              'Registration Successful',
-              'Thank you for your registration. You may now login!'
-            )
-          }, 200); // show alert of successful registration
-        }, 300);
-      } else {
-        Alert.alert(
-          'Registration Unsuccessful',
-          'Make sure you have filled out all fields correctly.'
-        ); // show unsuccessful alert
-      }
-    });
+            this.props.navigator.pop(); // go back to login page
+            setTimeout(() => {
+              Alert.alert(
+                'Registration Successful',
+                'Thank you for your registration. You may now login!',
+              );
+            }, 200); // show alert of successful registration
+          }, 300);
+        } else {
+          Alert.alert(
+            'Registration Unsuccessful',
+            'Make sure you have filled out all fields correctly.',
+          ); // show unsuccessful alert
+        }
+      });
+    }, 400);
   }
 
   render() {
@@ -46,9 +49,9 @@ class RegisterScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-          <Text style={styles.title}>An app made for gamers</Text>
+        <Text style={styles.title}>An app made for gamers</Text>
         <View style={styles.container}>
-          <RegisterForm registerClicked={this.onPressRegister}/>
+          <RegisterForm registerClicked={this.onPressRegister} />
         </View>
       </View>
     );
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    isRegistered: state.authentication.register,
+    isRegistered: state.authentication.registered,
   };
 }
 

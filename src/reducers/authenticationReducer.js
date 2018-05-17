@@ -23,16 +23,16 @@ export default function authenticationReducer(state = {}, action) {
         {},
         state,
         {
-          register: true,
-        }
+          registered: true,
+        },
       );
     case types.REGISTER_FAILED:
       return Object.assign(
         {},
         state,
         {
-          register: false,
-        }
+          registered: false,
+        },
       );
     default:
       return state;

@@ -8,11 +8,11 @@ class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      password: '',
-      confirmPassword: '',
-      email:'',
-      phoneNumber:'',
+      name: null,
+      password: null,
+      confirmPassword: null,
+      email: null,
+      phoneNumber: null,
     };
     this.onChangeTextName = this.onChangeTextName.bind(this);
     this.onChangeTextPassword = this.onChangeTextPassword.bind(this);
@@ -36,14 +36,14 @@ class RegisterForm extends React.Component {
       confirmPassword: text,
     });
   }
-  onChangeTextEmail(text){
+  onChangeTextEmail(text) {
     this.setState({
-      email:text,
+      email: text,
     });
   }
-  onChangeTextPhoneNumber(text){
+  onChangeTextPhoneNumber(text) {
     this.setState({
-      phoneNumber:text,
+      phoneNumber: text,
     });
   }
   onPressRegister() {
@@ -52,12 +52,11 @@ class RegisterForm extends React.Component {
       this.state.email,
       this.state.password,
       this.state.confirmPassword,
-      this.state.phoneNumber
+      this.state.phoneNumber,
     );
   }
 
   render() {
-
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <TextInput
@@ -143,8 +142,6 @@ const styles = StyleSheet.create({
 RegisterForm.propTypes = {
   registerClicked: PropTypes.func.isRequired,
 };
-
-
 
 
 export default RegisterForm;

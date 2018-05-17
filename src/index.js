@@ -1,4 +1,4 @@
-import { YellowBox } from 'react-native';
+import { AsyncStorage, YellowBox } from 'react-native';
 import { Provider } from 'react-redux';
 
 import configureStore from '../src/store/configureStore';
@@ -20,4 +20,14 @@ const store = configureStore();
 
 registerScreens(store, Provider);
 
-startLogin();
+async function initializeApp() {
+  // AsyncStorage.clear();
+  const token = await AsyncStorage.getItem('@spelletjes/token');
+  if (!token) {
+    startLogin();
+  } else {
+    startApp();
+  }
+}
+
+initializeApp();

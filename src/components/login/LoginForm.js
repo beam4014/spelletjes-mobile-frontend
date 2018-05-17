@@ -2,7 +2,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { StyleSheet, Text, Alert, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Alert, AsyncStorage, TextInput, TouchableOpacity } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { startApp } from '../../navigation/AppNavigator';
@@ -43,6 +43,7 @@ class LoginForm extends React.Component {
           loading: false,
         });
         if (this.props.token) {
+          AsyncStorage.setItem("@spelletjes/token", JSON.stringify(this.props.token));
           startApp();
         } else {
           Alert.alert('Something went wrong. Please try again...');
