@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from '../src/store/configureStore';
 
 import { registerScreens } from '../src/navigation/screens';
-import {startApp, startLogin} from '../src/navigation/AppNavigator';
+import { startApp, startLogin } from '../src/navigation/AppNavigator';
 
 // These will still be logged out to Developer Tools
 YellowBox.ignoreWarnings([
@@ -18,6 +18,4 @@ const store = configureStore();
 
 registerScreens(store, Provider);
 
-// startLogin();
-
-startApp();
+startLogin();

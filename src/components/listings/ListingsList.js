@@ -26,6 +26,7 @@ class ListingsList extends React.Component {
           renderRow={
             listing =>
               (<ListingRow
+                key={listing.id}
                 listing={listing}
                 onPress={() => this.onPressListing(listing)}
               />)

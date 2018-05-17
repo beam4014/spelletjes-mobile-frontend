@@ -17,7 +17,7 @@ class ListingScreen extends React.Component {
           <Text style={styles.header}>Offers</Text>
           {
             _.map(this.props.listing.offers, offer => (
-              <View style={styles.offerContainer}>
+              <View key={offer.id} style={styles.offerContainer}>
                 <Text>User: {offer.user_id}</Text>
                 <Text>Offer Type: {offer.type}</Text>
                 <Text>{offer.text}</Text>

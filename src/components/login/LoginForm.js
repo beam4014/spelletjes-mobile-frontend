@@ -37,19 +37,17 @@ class LoginForm extends React.Component {
     this.setState({
       loading: true,
     });
-    setTimeout(() => {
-      this.props.login(this.state.username, this.state.password)
-        .then(() => {
-          this.setState({
-            loading: false,
-          });
-          if (this.props.token) {
-            startApp();
-          } else {
-            Alert.alert('Something went wrong. Please try again...');
-          }
+    this.props.login(this.state.username, this.state.password)
+      .then(() => {
+        this.setState({
+          loading: false,
         });
-    }, 10);
+        if (this.props.token) {
+          startApp();
+        } else {
+          Alert.alert('Something went wrong. Please try again...');
+        }
+      });
   }
 
   render() {
