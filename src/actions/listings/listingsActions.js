@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as types from './listingsTypes';
-import {URL_API} from "../url";
+import { URL_API } from '../url';
 
 
-//fetch listing
+// fetch listing
 function fetchListingSuccessful(data) {
   return {
     type: types.FETCH_LISTING_SUCCESSFUL,
@@ -23,7 +23,7 @@ export function fetchListing() {
   };
 }
 
-//submit listing
+// submit listing
 function submitListingSuccessful(data) {
   return {
     type: types.SUBMIT_LISTING_SUCCESSFUL,
@@ -35,9 +35,9 @@ function submitListingFailed() {
     type: types.SUBMIT_LISTING_FAILED,
   };
 }
-export function submitListing(title,game_id,type,price,description) {
+export function submitListing(title, game_id, type, price, description) {
   return function (dispatch) {
-    return axios.post(`${URL_API}listings/create`,{
+    return axios.post(`${URL_API}listings/create`, {
       title,
       game_id,
       type,

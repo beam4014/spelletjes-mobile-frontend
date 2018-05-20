@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/myListings/myListingsActions';
@@ -27,12 +27,19 @@ class MyListingsScreen extends React.Component {
     if (this.state.listings.length > 0) {
       return (
         <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.floatingButton}
+          >
+            <Text>123</Text>
+          </TouchableOpacity>
           <ListingsList navigator={this.props.navigator} listings={this.state.listings} />
         </View>
       );
     }
     return (
-      <Text>No listings found..</Text>
+      <View>
+        <Text>No listings found...</Text>
+      </View>
     );
   }
 }
@@ -40,6 +47,9 @@ class MyListingsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  floatingButton: {
+
   },
 });
 

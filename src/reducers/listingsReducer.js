@@ -24,7 +24,7 @@ export default function fetchListingReducer(state = {}, action) {
         state,
         {
           submittedListing: true,
-        }
+        },
       );
     case types.SUBMIT_LISTING_FAILED:
       return Object.assign(
@@ -32,7 +32,7 @@ export default function fetchListingReducer(state = {}, action) {
         state,
         {
           submittedListing: false,
-        }
+        },
       );
     default:
       return state;

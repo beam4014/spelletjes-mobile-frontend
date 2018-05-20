@@ -1,7 +1,7 @@
 import * as types from '../actions/myListings/myListingsTypes';
 
-export default function fetchMyListingReducer(state = {}, action){
-  switch (action.type){
+export default function fetchMyListingReducer(state = {}, action) {
+  switch (action.type) {
     case types.FETCH_MYLISTING_SUCCESSFUL:
       return Object.assign(
         {}
@@ -16,11 +16,11 @@ export default function fetchMyListingReducer(state = {}, action){
       return Object.assign(
         {}
         ,
-          state
-          ,
-            {
-              data: [],
-            }
+        state
+        ,
+        {
+          data: [],
+        },
       );
     default:
       return state;

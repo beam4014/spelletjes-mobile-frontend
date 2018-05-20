@@ -6,6 +6,13 @@ import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/listings/listingsActions';
 import ListingsList from '../../components/listings/ListingsList';
 
+const actions = [{
+  text: 'Language',
+  icon: require('../../../src/images/icons/listings.png'),
+  name: 'bt_language',
+  position: 1,
+}];
+
 class ListingsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +39,9 @@ class ListingsScreen extends React.Component {
       );
     }
     return (
-      <Text>No listings found..</Text>
+      <View>
+        <Text>No listings found..</Text>
+      </View>
     );
   }
 }

@@ -20,10 +20,15 @@ export function startApp() {
         icon: require('../images/icons/listings.png'),
       },
       {
-        screen:'screen.MyListingsScreen',
-        label:'My listings',
+        screen: 'screen.SubmitListingsScreen',
+        label: 'Create listing',
         icon: require('../images/icons/listings.png'),
-      }
+      },
+      {
+        screen: 'screen.MyListingsScreen',
+        label: 'My listings',
+        icon: require('../images/icons/listings.png'),
+      },
     ],
     initialRouteName: 'screen.ListingsScreen',
   });
