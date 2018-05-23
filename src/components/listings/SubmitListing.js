@@ -1,17 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import {Alert, Text, StyleSheet, TextInput, TouchableOpacity, View, AsyncStorage,} from 'react-native';
+import * as authenticationAction from "../../actions/authentication/authenticationActions";
+import {bindActionCreators} from "redux";
+import * as listingsActions from "../../actions/listings/listingsActions";
+import {connect} from "react-redux";
+import listings from "../../reducers/listingsReducer";
 
 class SubmitListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: null,
-      game_id: null,
-      type: null,
-      price: null,
-      description: null,
+      title: '',
+      game_id: '',
+      type: '',
+      price: '',
+      description: '',
     };
     this.onChangeTextTitle = this.onChangeTextTitle.bind(this);
     this.onChangeTextGameId = this.onChangeTextGameId.bind(this);
@@ -52,13 +56,25 @@ class SubmitListing extends React.Component {
   }
 
   onPressSubmit() {
-    this.props.submitClicked(
-      this.state.title,
-      this.state.game_id,
-      this.state.type,
-      this.state.price,
-      this.state.description,
-    );
+    try {
+      AsyncStorage.getItem('@spelletjes/token', (err, token) => {
+        if (!err) {
+          if (token !== null) {
+            this.props.submitClicked(token
+            ,      this.state.title,
+              this.state.game_id,
+              this.state.type,
+              this.state.price,
+              this.state.description,).then(() => {
+            });
+          }
+        }
+      });
+      Alert.alert('Successfully submitted');
+    } catch (error) {
+      Alert.alert('Something went wrong. Please try again...');
+      console.log(error);
+    }
   }
 
   render() {
@@ -66,22 +82,22 @@ class SubmitListing extends React.Component {
       <View style={styles.container}>
         <TextInput
           placeholder="title"
-          placeholderTextColor="rgba(255,255,255,0.7)"
+          placeholderTextColor="blue"
           autoCorrect={false}
-          underlineColorAndroid="rgba(0,0,0,0)"
+          underlineColorAndroid="orange"
           onChangeText={this.onChangeTextTitle}
           style={styles.input}
         />
         <TextInput
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholderTextColor="blue"
+          underlineColorAndroid="orange"
           placeholder="game id"
           style={styles.input}
           onChangeText={this.onChangeTextGameId}
         />
         <TextInput
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholderTextColor="blue"
+          underlineColorAndroid="orange"
           placeholder="type"
           style={styles.input
           }
@@ -89,15 +105,15 @@ class SubmitListing extends React.Component {
           }
         />
         <TextInput
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholderTextColor="blue"
+          underlineColorAndroid="orange"
           placeholder="price"
           style={styles.input}
           onChangeText={this.onChangeTextPrice}
         />
         <TextInput
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          underlineColorAndroid="rgba(0,0,0,0)"
+          placeholderTextColor="blue"
+          underlineColorAndroid="orange"
           placeholder="description"
           style={styles.input
           }
@@ -107,6 +123,7 @@ class SubmitListing extends React.Component {
         <TouchableOpacity
           style={styles.buttonContainer}
           underlayColor="blue"
+          onPress={this.onPressSubmit}
         >
           <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
@@ -118,11 +135,13 @@ class SubmitListing extends React.Component {
 const styles = StyleSheet.create({
   container: {
     margin: 20,
+    backgroundColor: 'grey',
+    paddingVertical: 10,
   },
   input: {
     height: 40,
     backgroundColor: 'rgba(255,255,255,0.2)',
-    color: 'red',
+    color: 'black',
     paddingHorizontal: 10,
   },
   buttonContainer: {
@@ -132,7 +151,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: '#000',
+    color: 'white',
     fontWeight: '700',
   },
 
@@ -143,5 +162,17 @@ SubmitListing.propTypes = {
   submitClicked: PropTypes.func.isRequired,
 };
 
+function mapStateToProps(state) {
+  return {
+    submittedListing: state.listings.submittedListing,
+  };
+}
 
-export default SubmitListing;
+function mapDispatchToProps(dispatch) {
+  return {
+    submitClicked: bindActionCreators(listingsActions.submitListing, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitListing);
+

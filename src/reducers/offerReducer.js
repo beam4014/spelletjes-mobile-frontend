@@ -1,0 +1,28 @@
+import * as types from '../actions/offers/offerTypes';
+
+export default function offerReducer(state = {}, action) {
+  switch (action.type) {
+    case types.SUBMIT_OFFER_SUCCESSFUL:
+      return Object.assign(
+        {}
+        ,
+        state
+        ,
+        {
+          data: action.data.data,
+        },
+      );
+    case types.SUBMIT_OFFER_FAILED:
+      return Object.assign(
+        {}
+        ,
+        state
+        ,
+        {
+          data: [],
+        },
+      );
+    default:
+      return state;
+  }
+}
