@@ -1,6 +1,6 @@
 import * as types from './authenticationTypes';
 import axios from 'axios';
-import {URL, URL_API} from "../url";
+import { URL, URL_API } from '../url';
 
 function authenticationSuccessful(token) {
   return {
@@ -26,22 +26,20 @@ export function authenticate(username, password) {
     return axios.post(`${URL}oauth/token`, {
       grant_type: 'password',
       client_id: '1',
-      client_secret: 'MDwL9kumKs4ajP3YvWR5kslrKKndEavb5PWTIvDg',
+      client_secret: 'EY4vhbxToKvh0kiB7AOHQ3i3erypODSXfebwIeC2',
       username,
       password,
       scope: '',
     })
       .then((response) => {
         setAxiosToken(response.data.access_token);
-        return dispatch(authenticationSuccessful(response.data.access_token));
+        dispatch(authenticationSuccessful(response.data.access_token));
       })
-      .catch((error) => {
-        return dispatch(authenticationFailed());
-      });
+      .catch(error => dispatch(authenticationFailed()));
   };
 }
 
-//register actions
+// register actions
 export function register(name, email, password, confirmPassword, phoneNo) {
   return function (dispatch) {
     return axios.post(`${URL_API}register`, {
@@ -51,15 +49,11 @@ export function register(name, email, password, confirmPassword, phoneNo) {
       password_confirmation: confirmPassword,
       phone_number: phoneNo,
     })
-      .then((response) => {
-        return dispatch({
-          type: types.REGISTER_SUCCESSFUL,
-        });
-      })
-      .catch((error) => {
-        return dispatch({
-          type: types.REGISTER_FAILED,
-        });
-      });
+      .then(response => dispatch({
+        type: types.REGISTER_SUCCESSFUL,
+      }))
+      .catch(error => dispatch({
+        type: types.REGISTER_FAILED,
+      }));
   };
 }

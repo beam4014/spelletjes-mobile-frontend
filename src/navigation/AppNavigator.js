@@ -16,17 +16,17 @@ export function startApp() {
     tabs: [
       {
         screen: 'screen.ListingsScreen',
-        label: 'Listings',
+        title: 'Listings',
         icon: require('../images/icons/listings.png'),
       },
       {
         screen: 'screen.SubmitListingsScreen',
-        label: 'Create listing',
+        title: 'Submit Listing',
         icon: require('../images/icons/listings.png'),
       },
       {
         screen: 'screen.MyListingsScreen',
-        label: 'My listings',
+        title: 'My Listings',
         icon: require('../images/icons/listings.png'),
       },
     ],

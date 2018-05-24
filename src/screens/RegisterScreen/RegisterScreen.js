@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import RegisterForm from '../../components/register/RegisterForm';
+import Spinner from 'react-native-loading-spinner-overlay';
+import RegisterForm from '../../components/Register/RegisterForm';
 import * as authenticationAction from '../../actions/authentication/authenticationActions';
+
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
+
 
 class RegisterScreen extends React.Component {
   constructor(props) {

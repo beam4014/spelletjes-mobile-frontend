@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import LoginForm from '../../components/login/LoginForm';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import LoginForm from '../../components/Login/LoginForm';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
   },
   registerButtonText: {
     fontSize: 15,
-    color: '#fff'
-  }
+    color: '#fff',
+  },
 });

@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/listings/listingsActions';
-import ListingsList from '../../components/listings/ListingsList';
+import ListingsList from '../../components/Listings/ListingsList';
 
 const actions = [{
   text: 'Language',

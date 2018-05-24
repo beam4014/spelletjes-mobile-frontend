@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/myListings/myListingsActions';
-import ListingsList from '../../components/listings/ListingsList';
+import ListingsList from '../../components/Listings/ListingsList';
 
 class MyListingsScreen extends React.Component {
   constructor(props) {
@@ -15,23 +15,27 @@ class MyListingsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchMyListings().then(() => {
-      if (this.props.listings.data.length > 0) {
-        this.setState({
-          listings: this.props.listings.data,
-        });
-      }
-    });
+    try {
+      AsyncStorage.getItem('@spelletjes/token', (err, token) => {
+        if (!err) {
+          this.props.fetchMyListings(token).then(() => {
+            if (this.props.listings.data.length > 0) {
+              this.setState({
+                listings: this.props.listings.data,
+              });
+            }
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   render() {
     if (this.state.listings.length > 0) {
       return (
         <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.floatingButton}
-          >
-            <Text>123</Text>
-          </TouchableOpacity>
           <ListingsList navigator={this.props.navigator} listings={this.state.listings} />
         </View>
       );
@@ -48,9 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  floatingButton: {
-
-  },
+  floatingButton: {},
 });
 
 function mapStateToProps(state) {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import SubmitListing from '../../components/listings/SubmitListing';
+import SubmitListing from '../../components/Listings/SubmitListing';
 import * as listingsActions from '../../actions/listings/listingsActions';
 
 class SubmitListingScreen extends React.Component {
