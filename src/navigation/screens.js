@@ -14,5 +14,5 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent('screen.MyListingsScreen', () => MyListingScreen, store, Provider);
   Navigation.registerComponent('screen.RegisterScreen', () => RegisterScreen, store, Provider);
   Navigation.registerComponent('screen.SubmitListingsScreen', () => SubmitListingsScreen, store, Provider);
-  Navigation.registerComponent('screen.EditListingScreen', () => EditListingScreen, store, Provider);
+  Navigation.registerComponent('screen.EditListingsScreen', () => EditListingsScreen, store, Provider);
 }

@@ -9,7 +9,7 @@ export default function offerReducer(state = {}, action) {
         state
         ,
         {
-          data: action.data.data,
+          offerSubmitted: true,
         },
       );
     case types.SUBMIT_OFFER_FAILED:
@@ -19,7 +19,7 @@ export default function offerReducer(state = {}, action) {
         state
         ,
         {
-          data: [],
+          offerSubmitted: false,
         },
       );
     default:

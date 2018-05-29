@@ -57,3 +57,40 @@ export function register(name, email, password, confirmPassword, phoneNo) {
       }));
   };
 }
+
+export function requestSmsVerificationCode() {
+  return function (disptach) {
+    return axios({
+      url: `${URL}sms/generate`,
+      method: 'post'
+    }).then(response => {
+      disptach({
+        type: types.SMS_GENERATION_SUCCESSFUL
+      })
+    }).catch(error => {
+      dispatch({
+        type: types.SMS_GENERATION_FAILURE
+      })
+    })
+  }
+}
+
+export function submitSmsVrificationCode(code) {
+  return function (disptach) {
+    return axios({
+      url: `${URL}sms/verify`,
+      method: 'post',
+      data: {
+        code: code
+      }
+    }).then(response => {
+      disptach({
+        type: types.SMS_VERIFICATION_SUCCESSFUL
+      })
+    }).catch(error => {
+      dispatch({
+        type: types.SMS_VERIFICATION_FAILURE
+      })
+    })
+  }
+}

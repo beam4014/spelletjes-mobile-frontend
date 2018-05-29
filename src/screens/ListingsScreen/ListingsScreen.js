@@ -28,6 +28,18 @@ class ListingsScreen extends React.Component {
         if (!err) {
           if (token !== null) {
             setAxiosToken(token);
+            AsyncStorage.getItem('@spelletjes/verified', (err, verified) => {
+              if(!err) {
+                if (verified !== null) {
+                  let verificationStatus = JSON.parse(verified);
+                  if(!verificationStatus) {
+                    this.props.navigator.showModal({
+                      screen: 'screen.SmsVerificationScreen'
+                    });
+                  }
+                }
+              }
+            })
           }
         }
       });
