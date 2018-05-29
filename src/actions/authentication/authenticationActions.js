@@ -15,7 +15,7 @@ function authenticationFailed() {
   };
 }
 
-const setAxiosToken = (token) => {
+export const setAxiosToken = (token) => {
   const accessToken = JSON.stringify(token).replace('"', '');
   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 };

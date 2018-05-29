@@ -44,6 +44,7 @@ class LoginForm extends React.Component {
         });
         if (this.props.token) {
           AsyncStorage.setItem("@spelletjes/token", JSON.stringify(this.props.token));
+
           startApp();
         } else {
           Alert.alert('Something went wrong. Please try again...');

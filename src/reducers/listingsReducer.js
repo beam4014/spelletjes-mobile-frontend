@@ -40,6 +40,7 @@ export default function fetchListingReducer(state = {}, action) {
         state,
         {
           data: action.data.data,
+          listingEdited: true,
         },
       );
     case types.EDIT_LISTING_FAILED:
@@ -47,7 +48,8 @@ export default function fetchListingReducer(state = {}, action) {
         {},
         state,
         {
-          data: [],
+          data: null,
+          listingEdited: false,
         },
       );
     default:

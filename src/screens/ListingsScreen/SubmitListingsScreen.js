@@ -45,7 +45,14 @@ class SubmitListingScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.content}>
-          <SubmitListing submitClicked={this.onPressSubmitListing} />
+          <SubmitListing
+            title=""
+            type=""
+            game=""
+            price=""
+            description=""
+            submitClicked={this.onPressSubmitListing}
+          />
         </View>
       </View>
     );

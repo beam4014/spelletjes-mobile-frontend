@@ -69,7 +69,7 @@ function editListingFailed() {
     type: types.EDIT_LISTING_FAILED,
   };
 }
-export function editListing(listing_id, title, game_id, type, price, description) {
+export function editListing(title, price, description) {
   return function (dispatch) {
     return axios({
       method: 'post',

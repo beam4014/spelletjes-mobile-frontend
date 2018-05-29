@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Spinner from 'react-native-loading-spinner-overlay';
 import _ from 'lodash';
 import { Alert, Text, StyleSheet, TextInput, TouchableOpacity, View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsActions from '../../actions/listings/listingsActions';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 class SubmitListing extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class SubmitListing extends React.Component {
     this.state = {
       title: '',
       game_id: '',
-      type: '',
+      type: 'sell',
       price: '',
       description: '',
     };
@@ -24,6 +24,11 @@ class SubmitListing extends React.Component {
     this.onChangeTextDescription = this.onChangeTextDescription.bind(this);
     this.onSelectType = this.onSelectType.bind(this);
     this.onPressSubmit = this.onPressSubmit.bind(this);
+  }
+  componentWillMount() {
+    this.setState({
+      type: this.props.type,
+    });
   }
 
   onChangeTextTitle(text) {
@@ -60,18 +65,6 @@ class SubmitListing extends React.Component {
     this.setState({
       type,
     });
-  }
-
-  validate() {
-    if (_.isEmpty(this.state.title)) {
-      return false;
-    } else if (_.isEmpty(this.state.price) || !_.isNumber(this.state.price)) {
-      return false;
-    } else if (_.isEmpty(this.state.description)) {
-      return false;
-    } else if (_.isEmpty(this.state.type)) {
-      return false;
-    }
   }
 
   onPressSubmit() {
@@ -114,6 +107,19 @@ class SubmitListing extends React.Component {
     }
   }
 
+  validate() {
+    if (_.isEmpty(this.state.title)) {
+      return false;
+    } else if (_.isEmpty(this.state.price) || !_.isNumber(this.state.price)) {
+      return false;
+    } else if (_.isEmpty(this.state.description)) {
+      return false;
+    } else if (_.isEmpty(this.state.type)) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -128,6 +134,7 @@ class SubmitListing extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput
+          value={this.props.title}
           placeholder="Title"
           autoCorrect={false}
           underlineColorAndroid="orange"
@@ -135,6 +142,7 @@ class SubmitListing extends React.Component {
           style={styles.input}
         />
         <TextInput
+          value={this.props.game}
           underlineColorAndroid="orange"
           placeholder="Game"
           style={styles.input}
@@ -182,12 +190,14 @@ class SubmitListing extends React.Component {
           </TouchableOpacity>
         </View>
         <TextInput
+          value={this.props.price}
           underlineColorAndroid="orange"
           placeholder="Price"
           style={styles.input}
           onChangeText={this.onChangeTextPrice}
         />
         <TextInput
+          value={this.props.description}
           multiline
           underlineColorAndroid="orange"
           placeholder="Description"
@@ -255,6 +265,11 @@ const styles = StyleSheet.create({
 
 SubmitListing.propTypes = {
   submitClicked: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  game: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
