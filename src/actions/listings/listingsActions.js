@@ -58,4 +58,33 @@ export function submitListing(token, title, game_id, type, price, description) {
     });
   };
 }
-
+function editListingSuccessful(data) {
+  return {
+    type: types.EDIT_LISTING_SUCCESSFUL,
+    data,
+  };
+}
+function editListingFailed() {
+  return {
+    type: types.EDIT_LISTING_FAILED,
+  };
+}
+export function editListing(listing_id, title, game_id, type, price, description) {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}listings/` + listing_id + '/update',
+      data: {
+        title,
+        game_id,
+        type,
+        price,
+        description,
+      },
+    }).then((response) => {
+      dispatch(editListingSuccessful(response.data));
+    }).catch((error) => {
+      dispatch(editListingFailed());
+    });
+  };
+}
