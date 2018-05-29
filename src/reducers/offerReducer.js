@@ -1,4 +1,4 @@
-import * as types from '../actions/offers/offerTypes';
+import * as types from '../actions/offers/offersTypes';
 
 export default function offerReducer(state = {}, action) {
   switch (action.type) {
@@ -9,7 +9,7 @@ export default function offerReducer(state = {}, action) {
         state
         ,
         {
-          data: action.data.data,
+          offerSubmitted: true,
         },
       );
     case types.SUBMIT_OFFER_FAILED:
@@ -19,7 +19,7 @@ export default function offerReducer(state = {}, action) {
         state
         ,
         {
-          data: [],
+          offerSubmitted: false,
         },
       );
     default:

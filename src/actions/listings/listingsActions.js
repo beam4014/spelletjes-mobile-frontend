@@ -1,8 +1,11 @@
 import axios from 'axios';
 import * as types from './listingsTypes';
 import { URL_API } from '../url';
-import { AsyncStorage } from 'react-native';
 
+export const setAxiosToken = (token) => {
+  const accessToken = JSON.stringify(token).replace('"', '');
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+};
 
 // fetch SingleListing
 function fetchListingSuccessful(data) {
@@ -36,14 +39,11 @@ function submitListingFailed() {
     type: types.SUBMIT_LISTING_FAILED,
   };
 }
-export function submitListing(token, title, game_id, type, price, description) {
+export function submitListing(title, game_id, type, price, description) {
   return function (dispatch) {
     return axios({
       method: 'post',
       url: `${URL_API}listings/create`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       data: {
         title,
         game_id,
@@ -69,11 +69,11 @@ function editListingFailed() {
     type: types.EDIT_LISTING_FAILED,
   };
 }
-export function editListing(title, price, description) {
+export function editListing(listingId, title, price, description) {
   return function (dispatch) {
     return axios({
       method: 'post',
-      url: `${URL_API}listings/` + listing_id + '/update',
+      url: `${URL_API}listings/${listingId}/update`,
       data: {
         title,
         game_id,

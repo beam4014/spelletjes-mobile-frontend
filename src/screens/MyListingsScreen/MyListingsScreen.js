@@ -15,21 +15,13 @@ class MyListingsScreen extends React.Component {
   }
 
   componentDidMount() {
-    try {
-      AsyncStorage.getItem('@spelletjes/token', (err, token) => {
-        if (!err) {
-          this.props.fetchMyListings(token).then(() => {
-            if (this.props.listings.data.length > 0) {
-              this.setState({
-                listings: this.props.listings.data,
-              });
-            }
-          });
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.fetchMyListings().then(() => {
+      if (this.props.listings.data.length > 0) {
+        this.setState({
+          listings: this.props.listings.data,
+        });
+      }
+    });
   }
 
   render() {

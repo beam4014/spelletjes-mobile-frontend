@@ -9,7 +9,7 @@ import SubmitListing from '../../components/Listings/SubmitListing';
 class EditListingScreen extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.handleSubmitEditListing = this.handleSubmitEditListing.bind(this);
   }
 
@@ -18,13 +18,13 @@ class EditListingScreen extends React.Component {
       if (this.props.editedSuccessful) {
         Alert.alert(
           'Success',
-          'You have successfully updated your listing.'
+          'You have successfully updated your listing.',
         );
         this.props.navigator.pop();
       } else {
         Alert.alert(
           'Failed',
-          'Something went wrong, and your listing hasn\'t been successfully updated'
+          'Something went wrong, and your listing hasn\'t been successfully updated',
         );
       }
     });

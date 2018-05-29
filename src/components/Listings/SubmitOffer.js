@@ -6,45 +6,27 @@ import { Alert, Text, StyleSheet, TextInput, TouchableOpacity, View, AsyncStorag
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as listingsActions from '../../actions/listings/listingsActions';
+import * as offersActions from '../../actions/offers/offersActions';
 
-class SubmitListing extends React.Component {
+class SubmitOffer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      game_id: '',
-      type: undefined,
+      type: 'money', // money or game
       price: '',
       description: '',
     };
-    this.onChangeTextTitle = this.onChangeTextTitle.bind(this);
-    this.onChangeTextGameId = this.onChangeTextGameId.bind(this);
     this.onChangeTextType = this.onChangeTextType.bind(this);
     this.onChangeTextPrice = this.onChangeTextPrice.bind(this);
     this.onChangeTextDescription = this.onChangeTextDescription.bind(this);
     this.onSelectType = this.onSelectType.bind(this);
-    this.onPressOffer = this.onPressSubmit.bind(this);
+    this.onPressOffer = this.onPressOffer.bind(this);
   }
   componentWillMount() {
     this.setState({
       type: this.props.type,
-      title: this.props.title,
-      game_id: this.props.game,
       price: this.props.price,
       description: this.props.description,
-    });
-  }
-
-  onChangeTextTitle(text) {
-    this.setState({
-      title: text,
-    });
-  }
-
-  onChangeTextGameId(text) {
-    this.setState({
-      game_id: text,
     });
   }
 
@@ -72,39 +54,37 @@ class SubmitListing extends React.Component {
     });
   }
 
-  onPressSubmit() {
+  onPressOffer() {
     this.setState({
       loading: true,
     });
 
     if (this.validate) {
-      this.props.submitClicked(
-        this.state.title,
-        this.state.game_id,
-        this.state.type,
+      this.props.submitOfferClicked(
+        this.props.listingId,
         this.state.price,
+        this.state.type,
         this.state.description,
       ).then(() => {
         this.setState({
           loading: false,
         });
-        if (this.props.submittedListing) {
+        if (this.props.submittedOfferToListing) {
           setTimeout(() => {
-            Alert.alert('You have successfully submitted your listing!');
+            this.props.navigator.dismissLightBox();
+            Alert.alert('You have successfully submitted an offer!');
           }, 300);
         } else {
           Alert.alert('Failed');
         }
       });
     } else {
-      Alert.alert('Please fill all the fields before submitting your listing.');
+      Alert.alert('Please fill all the fields before submitting an offer.');
     }
   }
 
   validate() {
-    if (_.isEmpty(this.state.title)) {
-      return false;
-    } else if (_.isEmpty(this.state.price) || !_.isNumber(this.state.price)) {
+    if (_.isEmpty(this.state.price) || !_.isNumber(this.state.price)) {
       return false;
     } else if (_.isEmpty(this.state.description)) {
       return false;
@@ -127,27 +107,13 @@ class SubmitListing extends React.Component {
     }
     return (
       <KeyboardAwareScrollView style={styles.container}>
-        <TextInput
-          value={this.state.title}
-          placeholder="Title"
-          autoCorrect={false}
-          underlineColorAndroid="orange"
-          onChangeText={this.onChangeTextTitle}
-          style={styles.input}
-        />
-        <TextInput
-          value={this.state.game}
-          underlineColorAndroid="orange"
-          placeholder="Game"
-          style={styles.input}
-          onChangeText={this.onChangeTextGameId}
-        />
+
         <View style={styles.typesContainer}>
           <TouchableOpacity
-            onPress={() => this.onSelectType('sell')}
+            onPress={() => this.onSelectType('money')}
             style={[
               styles.typeButton,
-              this.state.type === 'sell'
+              this.state.type === 'money'
                 ? styles.typeButtonSelected
                 : false,
             ]}
@@ -157,42 +123,29 @@ class SubmitListing extends React.Component {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => this.onSelectType('trade')}
+            onPress={() => this.onSelectType('game')}
             style={[
               styles.typeButton,
-              this.state.type === 'trade'
-              ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Trade
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('buy')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'buy'
+              this.state.type === 'game'
                 ? styles.typeButtonSelected
                 : false,
             ]}
           >
             <Text style={styles.typeText}>
-              Buy
+              Game
             </Text>
           </TouchableOpacity>
         </View>
         {
-          this.state.type !== 'trade'
-          ? <TextInput
-            value={this.state.price}
-            underlineColorAndroid="orange"
-            placeholder="Price"
-            style={styles.input}
-            onChangeText={this.onChangeTextPrice}
-          />
-          : false
+          this.state.type !== 'game'
+            ? <TextInput
+              value={this.state.price}
+              underlineColorAndroid="orange"
+              placeholder="Price"
+              style={styles.input}
+              onChangeText={this.onChangeTextPrice}
+            />
+            : false
         }
         <TextInput
           value={this.state.description}
@@ -207,9 +160,9 @@ class SubmitListing extends React.Component {
         <TouchableOpacity
           style={styles.buttonContainer}
           underlayColor="blue"
-          onPress={this.onPressSubmit}
+          onPress={this.onPressOffer}
         >
-          <Text style={styles.buttonText}>SUBMIT</Text>
+          <Text style={styles.buttonText}>GIVE OFFER</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     );
@@ -261,26 +214,24 @@ const styles = StyleSheet.create({
 });
 
 
-SubmitListing.propTypes = {
-  submitClicked: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+SubmitOffer.propTypes = {
+  submitOfferClicked: PropTypes.func.isRequired,
   price: PropTypes.string.isRequired,
-  game: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    submittedListing: state.listings.submittedListing,
+    submittedOfferToListing: state.offers.offerSubmitted,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    submitOfferClicked: bindActionCreators(listingsActions.submitListing, dispatch),
+    submitOfferClicked: bindActionCreators(offersActions.submitOffer, dispatch),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubmitListing);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitOffer);
 

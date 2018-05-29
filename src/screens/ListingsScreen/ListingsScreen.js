@@ -4,8 +4,9 @@ import { Text, View, StyleSheet, AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/listings/listingsActions';
-import {setAxiosToken} from '../../actions/authentication/authenticationActions';
+import { setAxiosToken } from '../../actions/authentication/authenticationActions';
 import ListingsList from '../../components/Listings/ListingsList';
+import axios from 'axios';
 
 const actions = [{
   text: 'Language',
@@ -23,18 +24,6 @@ class ListingsScreen extends React.Component {
   }
 
   componentDidMount() {
-    try {
-      AsyncStorage.getItem('@spelletjes/token', (err, token) => {
-        if (!err) {
-          if (token !== null) {
-            setAxiosToken(token);
-          }
-        }
-      });
-    } catch (error) {
-      Alert.alert('Something went wrong. Please try again...');
-      console.log(error);
-    }
     this.props.fetchListings().then(() => {
       if (this.props.listings.data.length > 0) {
         this.setState({

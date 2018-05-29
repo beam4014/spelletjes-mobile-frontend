@@ -14,10 +14,20 @@ function submitOfferFailed() {
     type: types.SUBMIT_OFFER_FAILED,
   };
 }
-export function submitOffer() {
+export function submitOffer(listingId, price, type, description) {
   return function (dispatch) {
-    return axios.post(`${URL_API}`) //to be changed
-      .then(response => dispatch(submitOfferSuccessful(response.data)))
-      .catch(error => dispatch(submitOfferFailed()));
+    return axios({
+      method: 'post',
+      url: `${URL_API}listings/${listingId}/offers/create`,
+      data: {
+        type,
+        price,
+        description,
+      },
+    }).then((response) => {
+      dispatch(submitOfferSuccessful(response.data));
+    }).catch((error) => {
+      dispatch(submitOfferFailed());
+    });
   };
 }
