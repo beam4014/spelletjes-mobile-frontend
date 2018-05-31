@@ -51,8 +51,7 @@ class RegisterScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>An app made for gamers</Text>
-        <View style={styles.container}>
+        <View style={styles.content}>
           <RegisterForm registerClicked={this.onPressRegister} />
         </View>
       </View>
@@ -65,22 +64,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#e67e22',
   },
-
-  logoContainer: {
-    alignItems: 'center',
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 120,
-    height: 100,
-  },
-  title: {
-    color: '#FFF',
-    marginTop: 10,
-    width: 160,
-    textAlign: 'center',
-    opacity: 0.7,
+  content: {
+    flex: 1,
+    marginTop: 20,
   },
 });
 

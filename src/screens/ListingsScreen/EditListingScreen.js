@@ -1,44 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { View, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsActions from '../../actions/listings/listingsActions';
-import SubmitListing from '../../components/Listings/SubmitListing';
+import EditListing from '../../components/Listings/EditListing';
 
 class EditListingScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    this.state = {
+      loading: false,
+    };
     this.handleSubmitEditListing = this.handleSubmitEditListing.bind(this);
   }
 
-  handleSubmitEditListing(listingId, title, type, description) {
-    this.props.editListing(listingId, title, type, description).then(() => {
-      if (this.props.editedSuccessful) {
-        Alert.alert(
-          'Success',
-          'You have successfully updated your listing.',
-        );
-        this.props.navigator.pop();
-      } else {
-        Alert.alert(
-          'Failed',
-          'Something went wrong, and your listing hasn\'t been successfully updated',
-        );
-      }
+  handleSubmitEditListing(title, price, description) {
+    this.setState({
+      loading: true,
+    });
+    this.props.editListing(this.props.listingId, title, price, description).then(() => {
+      this.setState({
+        loading: false,
+      });
+      setTimeout(() => {
+        if (this.props.listingEdited) {
+          Alert.alert(
+            'Success',
+            'You have successfully updated your listing.',
+          );
+          this.props.navigator.pop();
+        } else {
+          Alert.alert(
+            'Failed',
+            'Something went wrong...',
+          );
+        }
+      });
     });
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <Spinner
+          visible={this.state.loading}
+          textContent="Submitting"
+          color="white"
+          overlayColor="orange"
+        />
+      );
+    }
     return (
       <View style={styles.container}>
-        <SubmitListing
+        <EditListing
           title={this.props.title}
           price={this.props.price}
-          game={this.props.game}
-          description={this.props.description}
           type={this.props.type}
+          description={this.props.description}
           submitClicked={this.handleSubmitEditListing}
         />
       </View>
@@ -48,14 +68,13 @@ class EditListingScreen extends React.Component {
 }
 
 EditListingScreen.propTypes = {
+  listingId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
-  game: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   editListing: PropTypes.func.isRequired,
+  description: PropTypes.string.isRequired,
   navigator: PropTypes.object.isRequired,
-  editedSuccessful: PropTypes.bool.isRequired,
+  listingEdited: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -69,7 +88,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    editedSuccessful: state.listings.listingEdited,
+    listingEdited: state.listings.listingEdited,
   };
 }
 

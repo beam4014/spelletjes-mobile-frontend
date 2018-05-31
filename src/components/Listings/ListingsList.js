@@ -13,6 +13,7 @@ class ListingsList extends React.Component {
   onPressListing(listing) {
     this.props.navigator.push({
       screen: 'screen.ListingScreen',
+      title: listing.title,
       passProps: {
         listing,
       },
@@ -22,6 +23,7 @@ class ListingsList extends React.Component {
     return (
       <View style={styles.container}>
         <ListView
+          showsVerticalScrollIndicator={false}
           items={this.props.listings}
           renderRow={
             listing =>
@@ -40,7 +42,10 @@ class ListingsList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20,
+    marginTop: 10,
+    marginBottom: 5,
+    marginLeft: 15,
+    marginRight: 15,
   },
 });
 

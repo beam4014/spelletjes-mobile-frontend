@@ -2,11 +2,6 @@ import axios from 'axios';
 import * as types from './listingsTypes';
 import { URL_API } from '../url';
 
-export const setAxiosToken = (token) => {
-  const accessToken = JSON.stringify(token).replace('"', '');
-  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-};
-
 // fetch SingleListing
 function fetchListingSuccessful(data) {
   return {
@@ -48,7 +43,7 @@ export function submitListing(title, game_id, type, price, description) {
         title,
         game_id,
         type,
-        price,
+        asking_price: price,
         description,
       },
     }).then((response) => {
@@ -58,17 +53,6 @@ export function submitListing(title, game_id, type, price, description) {
     });
   };
 }
-function editListingSuccessful(data) {
-  return {
-    type: types.EDIT_LISTING_SUCCESSFUL,
-    data,
-  };
-}
-function editListingFailed() {
-  return {
-    type: types.EDIT_LISTING_FAILED,
-  };
-}
 export function editListing(listingId, title, price, description) {
   return function (dispatch) {
     return axios({
@@ -76,15 +60,38 @@ export function editListing(listingId, title, price, description) {
       url: `${URL_API}listings/${listingId}/update`,
       data: {
         title,
-        game_id,
-        type,
         price,
         description,
       },
     }).then((response) => {
-      dispatch(editListingSuccessful(response.data));
+      dispatch({
+        type: types.EDIT_LISTING_SUCCESSFUL,
+      });
     }).catch((error) => {
-      dispatch(editListingFailed());
+      dispatch({
+        type: types.EDIT_LISTING_FAILED,
+      });
+    });
+  };
+}
+
+
+export function reportListing(listingId, reason) {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}listings/gi${listingId}/report`,
+      data: {
+        reason,
+      },
+    }).then((response) => {
+      dispatch({
+        type: types.LISTING_REPORT_SUCCESSFUL,
+      });
+    }).catch((error) => {
+      dispatch({
+        type: types.LISTING_REPORT_FAILURE,
+      });
     });
   };
 }

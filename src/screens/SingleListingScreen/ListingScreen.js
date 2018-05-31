@@ -1,19 +1,28 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as listingActions from '../../actions/listings/listingsActions';
 
 class ListingScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.listing);
+
+    this.listing = this.props.listing;
+    this.offers = this.props.listing.listingOffers.data;
+
     this.onPressEdit = this.onPressEdit.bind(this);
+    this.onPressReport = this.onPressReport.bind(this);
   }
   onPressEdit(listing) {
     this.props.navigator.push({
       screen: 'screen.EditListingScreen',
+      title: 'Edit',
       passProps: {
+        listingId: listing.id,
         title: listing.title,
         type: listing.type,
         game: listing.game_id,
@@ -24,53 +33,113 @@ class ListingScreen extends React.Component {
   }
   onPressOffer(listing) {
     this.props.navigator.showLightBox({
-      screen: 'screen.SubmitOfferScreen',
+      screen: 'screen.SubmitOffer',
       passProps: {
         listingId: listing.id,
       },
       style: {
-        backgroundBlur: 'dark', // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
-        backgroundColor: 'white', // tint color for the background, you can specify alpha here (optional)
-        tapBackgroundToDismiss: true, // dismisses LightBox on background taps (optional)
+        backgroundBlur: 'dark',
+        tapBackgroundToDismiss: true,
       },
-      adjustSoftInput: 'resize', // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
     });
   }
-
+  onPressReport() {
+    this.props.navigator.showLightBox({
+      screen: 'screen.Report',
+      passProps: {
+        listingId: this.listing.id,
+      },
+      style: {
+        backgroundBlur: 'dark',
+        tapBackgroundToDismiss: true,
+      },
+    });
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text>{this.props.listing.title}</Text>
-        <Text>{this.props.listing.type}</Text>
-        <Text>{this.props.listing.asking_price}</Text>
-        <Text>{this.props.listing.description}</Text>
-        <View style={styles.offersContainer}>
-          <Text style={styles.header}>Offers</Text>
+        <Image
+          style={styles.headerImage}
+          source={{ uri: 'http://images.vg247.com/current//2013/11/mario-party-island-tour-header-112313.jpg' }}
+        />
+        <View style={styles.content}>
+          <View style={styles.top}>
+            <Text style={styles.title}>{this.listing.title}</Text>
+            <Text style={styles.type}>{this.listing.type.toUpperCase()}</Text>
+          </View>
           {
-            _.map(this.props.listing.offers, offer => (
-              <View key={offer.id} style={styles.offerContainer}>
-                <Text>User: {offer.user_id}</Text>
-                <Text>Offer Type: {offer.type}</Text>
-                <Text>{offer.text}</Text>
-                <Text>{moment(offer.created_at).fromNow()}</Text>
-              </View>
-              ))
+            this.props.listing.asking_price
+              ? <Text>{this.listing.asking_price} EUR</Text>
+              : false
           }
+          <Text style={styles.sectionLabel}>Description</Text>
+          <Text>{this.props.listing.description}</Text>
+          <View style={styles.offersContainer}>
+            {
+              this.offers.length > 0
+                ? <Text style={styles.sectionLabel}>Offers</Text>
+                : false
+            }
+            {
+              _.map(this.offers, offer => (
+                <View key={offer.id} style={styles.offerContainer}>
+                  <View style={styles.top}>
+                    <Text>
+                      {offer.user.name.charAt(0).toUpperCase() + offer.user.name.slice(1)}
+                    </Text>
+                    <Text style={styles.typeInverse}>{offer.type.toUpperCase()}</Text>
+                  </View>
+                  {
+                    offer.type === 'money'
+                      ? <Text>{offer.price} EUR</Text>
+                      : false
+                  }
+                  <Text>{offer.text}</Text>
+                  <Text style={styles.date}>{moment(offer.created_at.data).fromNow()}</Text>
+                </View>
+              ))
+            }
+          </View>
+          {
+            this.props.authenticatedUser.id !== this.listing.user.id
+              ? <TouchableOpacity
+                style={styles.buttonContainer}
+                underlayColor="blue"
+                onPress={() => this.onPressOffer(this.props.listing)}
+              >
+                <Text style={styles.buttonText}>OFFER</Text>
+              </TouchableOpacity>
+              : false
+          }
+          {
+            this.props.authenticatedUser.id === this.listing.user.id
+              ? <TouchableOpacity
+                style={styles.buttonContainer}
+                underlayColor="blue"
+                onPress={() => this.onPressEdit(this.props.listing)}
+              >
+                <Text style={styles.buttonText}>EDIT</Text>
+              </TouchableOpacity>
+              : false
+          }
+          {
+            this.props.authenticatedUser.id !== this.listing.user.id
+              ? <TouchableOpacity
+                style={styles.buttonContainer}
+                underlayColor="blue"
+                onPress={() => this.onPressReport(this.props.listing.id)}
+              >
+                <Text style={styles.buttonText}>Report</Text>
+              </TouchableOpacity>
+              : false
+          }
+          <TouchableOpacity
+            style={styles.reportButton}
+            onPress={this.onPressReport}
+          >
+            <Text style={styles.text}>Report</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          underlayColor="blue"
-          onPress={() => this.onPressOffer(this.props.listing)}
-        >
-          <Text style={styles.buttonText}>OFFER</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          underlayColor="blue"
-          onPress={() => this.onPressEdit(this.props.listing)}
-        >
-          <Text style={styles.buttonText}>EDIT</Text>
-        </TouchableOpacity>
       </ScrollView>
     );
   }
@@ -79,19 +148,44 @@ class ListingScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  content: {
     margin: 20,
   },
-  offersContainer: {
-    marginTop: 10,
-    marginBottom: 10,
+  top: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  header: {
-    fontSize: 15,
+  type: {
+    color: '#e67e22',
+    backgroundColor: '#fff',
+    padding: 5,
+  },
+  typeInverse: {
+    color: '#fff',
+    backgroundColor: '#e67e22',
+    padding: 5,
+    fontSize: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#000',
   },
+  offersContainer: {
+    marginBottom: 10,
+  },
+  sectionLabel: {
+    fontSize: 15,
+    color: '#000',
+    marginTop: 5,
+    marginBottom: 3,
+  },
   offerContainer: {
-    backgroundColor: '#ccc',
-    padding: 5,
+    backgroundColor: '#fff',
+    padding: 7,
+    borderRadius: 5,
   },
   buttonContainer: {
     backgroundColor: '#34495e',
@@ -103,11 +197,28 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
   },
+  headerImage: {
+    width: '100%',
+    height: 100,
+  },
+  date: {
+    fontSize: 10,
+  },
 });
 
 ListingScreen.propTypes = {
   listing: PropTypes.object.isRequired,
   navigator: PropTypes.object.isRequired,
+  authenticatedUser: PropTypes.object.isRequired,
+  report: PropTypes.func.isRequired,
 };
 
-export default ListingScreen;
+function mapStateToProps(state) {
+  return {
+    authenticatedUser: state.authentication.user,
+    listingReported: state.listings.listingReported,
+  };
+}
+
+export default connect(mapStateToProps)(ListingScreen);
+

@@ -5,6 +5,7 @@ import configureStore from '../src/store/configureStore';
 
 import { registerScreens } from '../src/navigation/screens';
 import { startApp, startLogin } from '../src/navigation/AppNavigator';
+import {setAxiosToken} from "./actions/authentication/authenticationActions";
 
 // These will still be logged out to Developer Tools
 YellowBox.ignoreWarnings([
@@ -21,11 +22,12 @@ const store = configureStore();
 registerScreens(store, Provider);
 
 async function initializeApp() {
-  AsyncStorage.clear();
+  // AsyncStorage.clear();
   const token = await AsyncStorage.getItem('@spelletjes/token');
   if (!token) {
     startLogin();
   } else {
+    setAxiosToken(token);
     startApp();
   }
 }

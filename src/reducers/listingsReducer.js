@@ -39,7 +39,6 @@ export default function fetchListingReducer(state = {}, action) {
         {},
         state,
         {
-          data: action.data.data,
           listingEdited: true,
         },
       );
@@ -48,8 +47,23 @@ export default function fetchListingReducer(state = {}, action) {
         {},
         state,
         {
-          data: null,
           listingEdited: false,
+        },
+      );
+    case types.LISTING_REPORT_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          listingReported: true,
+        },
+      );
+    case types.LISTING_REPORT_FAILURE:
+      return Object.assign(
+        {},
+        state,
+        {
+          listingReported: false,
         },
       );
     default:

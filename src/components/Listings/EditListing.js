@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsActions from '../../actions/listings/listingsActions';
 
-class SubmitListing extends React.Component {
+class EditListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,8 +67,6 @@ class SubmitListing extends React.Component {
     if (this.validate()) {
       this.props.submitClicked(
         this.state.title,
-        this.state.game_id,
-        this.state.type,
         this.state.price,
         this.state.description,
       );
@@ -105,65 +103,17 @@ class SubmitListing extends React.Component {
           onChangeText={this.onChangeTextTitle}
           style={styles.input}
         />
-        <TextInput
-          value={this.state.game_id}
-          underlineColorAndroid="orange"
-          placeholder="Game"
-          style={styles.input}
-          onChangeText={this.onChangeTextGameId}
-        />
-        <View style={styles.typesContainer}>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('sell')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'sell'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Sell
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('trade')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'trade'
-              ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Trade
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('buy')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'buy'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Buy
-            </Text>
-          </TouchableOpacity>
-        </View>
         {
           this.state.type !== 'trade'
-          ? <TextInput
-            value={this.state.price}
-            keyboardType={'numeric'}
-            underlineColorAndroid="orange"
-            placeholder="Price"
-            style={styles.input}
-            onChangeText={this.onChangeTextPrice}
-          />
-          : false
+            ? <TextInput
+              value={this.state.price}
+              keyboardType={'numeric'}
+              underlineColorAndroid="orange"
+              placeholder="Price"
+              style={styles.input}
+              onChangeText={this.onChangeTextPrice}
+            />
+            : false
         }
         <TextInput
           value={this.state.description}
@@ -180,7 +130,7 @@ class SubmitListing extends React.Component {
           underlayColor="blue"
           onPress={this.onPressSubmit}
         >
-          <Text style={styles.buttonText}>SUBMIT</Text>
+          <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     );
@@ -232,9 +182,9 @@ const styles = StyleSheet.create({
 });
 
 
-SubmitListing.propTypes = {
+EditListing.propTypes = {
   submitClicked: PropTypes.func.isRequired,
 };
 
-export default SubmitListing;
+export default EditListing;
 

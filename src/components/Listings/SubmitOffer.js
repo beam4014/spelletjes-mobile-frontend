@@ -22,14 +22,6 @@ class SubmitOffer extends React.Component {
     this.onSelectType = this.onSelectType.bind(this);
     this.onPressOffer = this.onPressOffer.bind(this);
   }
-  componentWillMount() {
-    this.setState({
-      type: this.props.type,
-      price: this.props.price,
-      description: this.props.description,
-    });
-  }
-
   onChangeTextType(text) {
     this.setState({
       type: text,
@@ -106,72 +98,80 @@ class SubmitOffer extends React.Component {
       );
     }
     return (
-      <KeyboardAwareScrollView style={styles.container}>
-
-        <View style={styles.typesContainer}>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.typesContainer}>
+            <TouchableOpacity
+              onPress={() => this.onSelectType('money')}
+              style={[
+                styles.typeButton,
+                this.state.type === 'money'
+                  ? styles.typeButtonSelected
+                  : false,
+              ]}
+            >
+              <Text style={styles.typeText}>
+                Sell
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.onSelectType('game')}
+              style={[
+                styles.typeButton,
+                this.state.type === 'game'
+                  ? styles.typeButtonSelected
+                  : false,
+              ]}
+            >
+              <Text style={styles.typeText}>
+                Game
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {
+            this.state.type !== 'game'
+              ? <TextInput
+                value={this.state.price}
+                underlineColorAndroid="orange"
+                placeholder="Price"
+                style={styles.input}
+                onChangeText={this.onChangeTextPrice}
+              />
+              : false
+          }
+          <TextInput
+            value={this.state.description}
+            multiline
+            underlineColorAndroid="orange"
+            placeholder="Description"
+            numberOfLines={4}
+            style={[styles.input, styles.descriptionInput]}
+            onChangeText={this.onChangeTextDescription}
+            blurOnSubmit={false}
+          />
           <TouchableOpacity
-            onPress={() => this.onSelectType('money')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'money'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
+            style={styles.buttonContainer}
+            underlayColor="blue"
+            onPress={this.onPressOffer}
           >
-            <Text style={styles.typeText}>
-              Sell
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('game')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'game'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Game
-            </Text>
+            <Text style={styles.buttonText}>Submit Offer</Text>
           </TouchableOpacity>
         </View>
-        {
-          this.state.type !== 'game'
-            ? <TextInput
-              value={this.state.price}
-              underlineColorAndroid="orange"
-              placeholder="Price"
-              style={styles.input}
-              onChangeText={this.onChangeTextPrice}
-            />
-            : false
-        }
-        <TextInput
-          value={this.state.description}
-          multiline
-          underlineColorAndroid="orange"
-          placeholder="Description"
-          numberOfLines={4}
-          style={[styles.input, styles.descriptionInput]}
-          onChangeText={this.onChangeTextDescription}
-          blurOnSubmit={false}
-        />
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          underlayColor="blue"
-          onPress={this.onPressOffer}
-        >
-          <Text style={styles.buttonText}>GIVE OFFER</Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    padding: 10,
+    backgroundColor: '#fff',
+    height: 300,
   },
   input: {
     height: 40,

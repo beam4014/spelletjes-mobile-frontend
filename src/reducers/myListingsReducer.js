@@ -4,20 +4,16 @@ export default function fetchMyListingReducer(state = {}, action) {
   switch (action.type) {
     case types.FETCH_MYLISTING_SUCCESSFUL:
       return Object.assign(
-        {}
-        ,
-        state
-        ,
+        {},
+        state,
         {
           data: action.data.data,
         },
       );
     case types.FETCH_MYLISTING_FAILED:
       return Object.assign(
-        {}
-        ,
-        state
-        ,
+        {},
+        state,
         {
           data: [],
         },

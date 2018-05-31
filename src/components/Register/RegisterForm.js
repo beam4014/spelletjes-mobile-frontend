@@ -60,7 +60,7 @@ class RegisterForm extends React.Component {
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <TextInput
-          placeholder="name"
+          placeholder="Name"
           placeholderTextColor="rgba(255,255,255,0.7)"
           autoCorrect={false}
           underlineColorAndroid="rgba(0,0,0,0)"
@@ -70,7 +70,7 @@ class RegisterForm extends React.Component {
         <TextInput
           placeholderTextColor="rgba(255,255,255,0.7)"
           underlineColorAndroid="rgba(0,0,0,0)"
-          placeholder="password"
+          placeholder="Password"
           secureTextEntry
           style={styles.input}
           onChangeText={this.onChangeTextPassword}
@@ -78,13 +78,13 @@ class RegisterForm extends React.Component {
         <TextInput
           placeholderTextColor="rgba(255,255,255,0.7)"
           underlineColorAndroid="rgba(0,0,0,0)"
-          placeholder="confirm password"
+          placeholder="Confirm Password"
           secureTextEntry
           style={styles.input}
           onChangeText={this.onChangeTextConfirmPassword}
         />
         <TextInput
-          placeholder="email"
+          placeholder="Email"
           placeholderTextColor="rgba(255,255,255,0.7)"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -94,7 +94,7 @@ class RegisterForm extends React.Component {
           style={styles.input}
         />
         <TextInput
-          placeholder="phone number"
+          placeholder="Phone Number"
           placeholderTextColor="rgba(255,255,255,0.7)"
           keyboardType="numeric"
           autoCapitalize="none"

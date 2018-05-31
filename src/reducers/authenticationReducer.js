@@ -34,6 +34,22 @@ export default function authenticationReducer(state = {}, action) {
           registered: false,
         },
       );
+    case types.GET_USER_DATA_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          user: action.user,
+        },
+      );
+    case types.GET_USER_DATA_FAILURE:
+      return Object.assign(
+        {},
+        state,
+        {
+          user: null,
+        },
+      );
     default:
       return state;
   }

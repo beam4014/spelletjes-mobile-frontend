@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
 
   logoContainer: {
     alignItems: 'center',
-    flexGrow: 1,
     justifyContent: 'center',
+    marginTop: 40,
   },
   logo: {
     width: 120,
@@ -71,5 +71,6 @@ const styles = StyleSheet.create({
   registerButtonText: {
     fontSize: 15,
     color: '#fff',
+    textAlign: 'center',
   },
 });

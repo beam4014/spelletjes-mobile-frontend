@@ -43,8 +43,7 @@ class LoginForm extends React.Component {
           loading: false,
         });
         if (this.props.token) {
-          AsyncStorage.setItem("@spelletjes/token", JSON.stringify(this.props.token));
-
+          AsyncStorage.setItem('@spelletjes/token', this.props.token);
           startApp();
         } else {
           Alert.alert('Something went wrong. Please try again...');
@@ -57,14 +56,19 @@ class LoginForm extends React.Component {
 
     if (this.state.loading) {
       return (
-        <Spinner visible={this.state.loading} textContent="Logging in" textStyle={{ color: '#e67e22' }} />
+        <Spinner
+          visible={this.state.loading}
+          textContent="Logging in"
+          color="#FFFFFF"
+          overlayColor="#e67e22"
+        />
       );
     }
 
     return (
       <KeyboardAwareScrollView style={styles.container}>
         <TextInput
-          placeholder="username or email"
+          placeholder="Email"
           placeholderTextColor="rgba(255,255,255,0.7)"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -76,7 +80,7 @@ class LoginForm extends React.Component {
         <TextInput
           placeholderTextColor="rgba(255,255,255,0.7)"
           underlineColorAndroid="rgba(0,0,0,0)"
-          placeholder="password"
+          placeholder="Password"
           secureTextEntry
           style={styles.input}
           onChangeText={this.onChangeTextPassword}
@@ -88,9 +92,7 @@ class LoginForm extends React.Component {
         >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
-        <Text
-
-        />
+        <Text />
       </KeyboardAwareScrollView>
     );
   }

@@ -57,3 +57,19 @@ export function register(name, email, password, confirmPassword, phoneNo) {
       }));
   };
 }
+
+
+export function getAuthenticatedUserData(token) {
+  setAxiosToken(token);
+  return function (dispatch) {
+    return axios({
+      method: 'get',
+      url: `${URL_API}me`,
+    }).then(response => dispatch({
+      type: types.GET_USER_DATA_SUCCESSFUL,
+      user: response.data.data,
+    })).catch(error => dispatch({
+      user: null,
+    }));
+  };
+}

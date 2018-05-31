@@ -20,21 +20,21 @@ class SubmitListingScreen extends React.Component {
   onPressSubmitListing = (title, gameId, type, price, description) => {
     this.setState({ loading: !this.state.loading });
     setTimeout(() => {
-      this.props.submit(title, gameId, type, price, description).then(() => {
+      this.props.submitListing(title, gameId, type, price, description).then(() => {
         this.setState({ loading: !this.state.loading }); // stop showing loading
         // check if user is registered using the state registered in redux
         if (this.props.isSubmitted) {
           setTimeout(() => {
-            this.props.navigator.pop(); // go back to login page
+            this.props.navigator.pop();
             setTimeout(() => {
               Alert.alert('Submit Successful');
             }, 200); // show alert of successful registration
           }, 300);
         } else {
           Alert.alert(
-            'Registration Unsuccessful',
+            'Listing Submission Failed',
             'Make sure you have filled out all fields correctly.',
-          ); // show unsuccessful alert
+          );
         }
       });
     }, 400);
@@ -80,7 +80,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    submittedListing: bindActionCreators(listingsActions.submitListing, dispatch),
+    submitListing: bindActionCreators(listingsActions.submitListing, dispatch),
   };
 }
 

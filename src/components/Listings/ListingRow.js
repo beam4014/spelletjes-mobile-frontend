@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 
@@ -10,13 +10,21 @@ class ListingRow extends React.Component {
         onPress={this.props.onPress}
         style={styles.container}
       >
-        <Text style={styles.text}>{this.props.listing.title}</Text>
-        <Text style={styles.text}>Type: {this.props.listing.type}</Text>
-        {
-          this.props.listing.asking_price
-          ? <Text style={styles.text}>Price: {this.props.listing.asking_price.toString()}</Text>
-            : false
-        }
+        <Image
+          style={styles.headerImage}
+          source={{ uri: 'http://images.vg247.com/current//2013/11/mario-party-island-tour-header-112313.jpg' }}
+        />
+        <View style={styles.content}>
+          <View style={styles.top}>
+            <Text style={[styles.text, styles.title]}>{this.props.listing.title}</Text>
+            <Text style={[styles.text, styles.type]}>{this.props.listing.type.toUpperCase()}</Text>
+          </View>
+          {
+            this.props.listing.asking_price
+              ? <Text style={styles.text}>{this.props.listing.asking_price.toString()} EUR</Text>
+              : false
+          }
+        </View>
       </TouchableOpacity>
     );
   }
@@ -26,12 +34,32 @@ class ListingRow extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: '#e67e22',
-    marginBottom: 5,
+    marginBottom: 10,
+  },
+  content: {
+    padding: 10,
+  },
+  headerImage: {
+    width: '100%',
+    height: 50,
   },
   text: {
     color: '#fff',
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  top: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  type: {
+    color: '#e67e22',
+    backgroundColor: '#fff',
+    padding: 5,
   },
 });
 

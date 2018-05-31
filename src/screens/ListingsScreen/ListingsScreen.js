@@ -1,19 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Text, View, StyleSheet, AsyncStorage, Alert } from 'react-native';
+import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/listings/listingsActions';
-import { setAxiosToken } from '../../actions/authentication/authenticationActions';
+import * as authenticationActions from '../../actions/authentication/authenticationActions';
 import ListingsList from '../../components/Listings/ListingsList';
-import axios from 'axios';
 
-const actions = [{
-  text: 'Language',
-  icon: require('../../../src/images/icons/listings.png'),
-  name: 'bt_language',
-  position: 1,
-}];
 
 class ListingsScreen extends React.Component {
   constructor(props) {
@@ -24,6 +17,9 @@ class ListingsScreen extends React.Component {
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('@spelletjes/token').then((token) => {
+      this.props.getAuthenticatedUserData(token);
+    });
     this.props.fetchListings().then(() => {
       if (this.props.listings.data.length > 0) {
         this.setState({
@@ -57,12 +53,14 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     listings: state.listings,
+    user: state.authentication.user,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchListings: bindActionCreators(listingsAction.fetchListing, dispatch),
+    getAuthenticatedUserData: bindActionCreators(authenticationActions.getAuthenticatedUserData, dispatch),
   };
 }
 
