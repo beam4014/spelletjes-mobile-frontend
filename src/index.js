@@ -22,7 +22,7 @@ const store = configureStore();
 registerScreens(store, Provider);
 
 async function initializeApp() {
-  // AsyncStorage.clear();
+  AsyncStorage.clear();
   const token = await AsyncStorage.getItem('@spelletjes/token');
   if (!token) {
     startLogin();

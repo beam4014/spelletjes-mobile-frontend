@@ -80,7 +80,7 @@ export function reportListing(listingId, reason) {
   return function (dispatch) {
     return axios({
       method: 'post',
-      url: `${URL_API}listings/gi${listingId}/report`,
+      url: `${URL_API}listings/${listingId}/report`,
       data: {
         reason,
       },

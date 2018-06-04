@@ -133,12 +133,6 @@ class ListingScreen extends React.Component {
               </TouchableOpacity>
               : false
           }
-          <TouchableOpacity
-            style={styles.reportButton}
-            onPress={this.onPressReport}
-          >
-            <Text style={styles.text}>Report</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     );
