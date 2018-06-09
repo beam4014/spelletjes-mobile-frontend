@@ -11,11 +11,12 @@ class SubmitListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'Luigi and his brother',
-      game_id: '5',
+      title: '',
+      game_id: undefined,
       type: 'sell',
-      price: 22,
-      description: 'It\'s and old game where his brother wears red.',
+      secondaryType: undefined,
+      price: undefined,
+      description: '',
     };
     this.onChangeTextTitle = this.onChangeTextTitle.bind(this);
     this.onChangeTextGameId = this.onChangeTextGameId.bind(this);
@@ -61,14 +62,25 @@ class SubmitListing extends React.Component {
       type,
     });
   }
+  onSelectSecondaryType(secondaryType) {
+    if (secondaryType === this.state.secondaryType) {
+      this.setState({
+        secondaryType: undefined,
+      });
+    } else {
+      this.setState({
+        secondaryType,
+      });
+    }
+  }
 
   onPressSubmit() {
-    console.log(this.validate());
     if (this.validate()) {
       this.props.submitClicked(
         this.state.title,
         this.state.game_id,
         this.state.type,
+        this.state.secondaryType,
         this.state.price,
         this.state.description,
       );
@@ -87,8 +99,10 @@ class SubmitListing extends React.Component {
       return false;
     } else if (_.isEmpty(this.state.game_id)) {
       return false;
-    } else if (_.isEmpty(this.state.price)) {
-      return false;
+    } else if (this.state.type === 'sell') {
+      if (_.isEmpty(this.state.price)) {
+        return false;
+      }
     }
 
     return true;
@@ -97,91 +111,131 @@ class SubmitListing extends React.Component {
   render() {
     return (
       <KeyboardAwareScrollView style={styles.container}>
-        <TextInput
-          value={this.state.title}
-          placeholder="Title"
-          autoCorrect={false}
-          underlineColorAndroid="orange"
-          onChangeText={this.onChangeTextTitle}
-          style={styles.input}
-        />
-        <TextInput
-          value={this.state.game_id}
-          underlineColorAndroid="orange"
-          placeholder="Game"
-          style={styles.input}
-          onChangeText={this.onChangeTextGameId}
-        />
-        <View style={styles.typesContainer}>
+        <View style={styles.content}>
+          <TextInput
+            value={this.state.title}
+            placeholder="Title"
+            autoCorrect={false}
+            underlineColorAndroid="orange"
+            onChangeText={this.onChangeTextTitle}
+            style={styles.input}
+          />
+          <TextInput
+            value={this.state.game_id}
+            underlineColorAndroid="orange"
+            placeholder="Game"
+            style={styles.input}
+            onChangeText={this.onChangeTextGameId}
+          />
+          <Text>Type</Text>
+          <View style={styles.typesContainer}>
+            <TouchableOpacity
+              onPress={() => this.onSelectType('sell')}
+              style={[
+                styles.typeButton,
+                this.state.type === 'sell'
+                  ? styles.typeButtonSelected
+                  : false,
+              ]}
+            >
+              <Text style={styles.typeText}>
+                Sell
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.onSelectType('trade')}
+              style={[
+                styles.typeButton,
+                this.state.type === 'trade'
+                  ? styles.typeButtonSelected
+                  : false,
+              ]}
+            >
+              <Text style={styles.typeText}>
+                Trade
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.onSelectType('buy')}
+              style={[
+                styles.typeButton,
+                this.state.type === 'buy'
+                  ? styles.typeButtonSelected
+                  : false,
+              ]}
+            >
+              <Text style={styles.typeText}>
+                Buy
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {
+            this.state.type !== 'buy'
+              ? <Text>Secondary Type (optional)</Text>
+              : false
+          }
+          {
+            this.state.type !== 'buy'
+              ? <View style={styles.typesContainer}>
+                <TouchableOpacity
+                  onPress={() => this.onSelectSecondaryType('sell')}
+                  style={[
+                    styles.typeButton,
+                    this.state.secondaryType === 'sell'
+                      ? styles.secondaryTypeButtonSelected
+                      : false,
+                  ]}
+                >
+                  <Text style={styles.typeText}>
+                    Sell
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.onSelectSecondaryType('trade')}
+                  style={[
+                    styles.typeButton,
+                    this.state.secondaryType === 'trade'
+                      ? styles.secondaryTypeButtonSelected
+                      : false,
+                  ]}
+                >
+                  <Text style={styles.typeText}>
+                    Trade
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              : false
+          }
+          {
+            this.state.type !== 'trade'
+              ? <TextInput
+                value={this.state.price}
+                keyboardType="numeric"
+                underlineColorAndroid="orange"
+                placeholder="Price"
+                style={styles.input}
+                onChangeText={this.onChangeTextPrice}
+              />
+              : false
+          }
+          <TextInput
+            value={this.state.description}
+            multiline
+            underlineColorAndroid="orange"
+            placeholder="Description"
+            numberOfLines={4}
+            style={[styles.input, styles.descriptionInput]}
+            onChangeText={this.onChangeTextDescription}
+            blurOnSubmit={false}
+          />
           <TouchableOpacity
-            onPress={() => this.onSelectType('sell')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'sell'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
+            style={styles.buttonContainer}
+            underlayColor="blue"
+            onPress={this.onPressSubmit}
           >
-            <Text style={styles.typeText}>
-              Sell
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('trade')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'trade'
-              ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Trade
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onSelectType('buy')}
-            style={[
-              styles.typeButton,
-              this.state.type === 'buy'
-                ? styles.typeButtonSelected
-                : false,
-            ]}
-          >
-            <Text style={styles.typeText}>
-              Buy
-            </Text>
+            <Text style={styles.buttonText}>SUBMIT</Text>
           </TouchableOpacity>
         </View>
-        {
-          this.state.type !== 'trade'
-          ? <TextInput
-            value={this.state.price}
-            keyboardType={'numeric'}
-            underlineColorAndroid="orange"
-            placeholder="Price"
-            style={styles.input}
-            onChangeText={this.onChangeTextPrice}
-          />
-          : false
-        }
-        <TextInput
-          value={this.state.description}
-          multiline
-          underlineColorAndroid="orange"
-          placeholder="Description"
-          numberOfLines={4}
-          style={[styles.input, styles.descriptionInput]}
-          onChangeText={this.onChangeTextDescription}
-          blurOnSubmit={false}
-        />
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          underlayColor="blue"
-          onPress={this.onPressSubmit}
-        >
-          <Text style={styles.buttonText}>SUBMIT</Text>
-        </TouchableOpacity>
       </KeyboardAwareScrollView>
     );
   }
@@ -189,10 +243,19 @@ class SubmitListing extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
+  },
+  content: {
+    flex: 1,
     margin: 20,
   },
   input: {
     height: 40,
+    padding: 10,
+    backgroundColor: 'orange',
+    marginBottom: 10,
+    borderRadius: 5,
+    color: 'white',
   },
   descriptionInput: {
     height: 100,
@@ -209,7 +272,7 @@ const styles = StyleSheet.create({
   },
   typesContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 10,
@@ -228,6 +291,9 @@ const styles = StyleSheet.create({
   },
   typeButtonSelected: {
     backgroundColor: 'orange',
+  },
+  secondaryTypeButtonSelected: {
+    backgroundColor: 'purple',
   },
 });
 

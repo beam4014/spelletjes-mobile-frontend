@@ -17,10 +17,10 @@ class SubmitListingScreen extends React.Component {
     this.onPressSubmitListing = this.onPressSubmitListing.bind(this);
   }
 
-  onPressSubmitListing = (title, gameId, type, price, description) => {
+  onPressSubmitListing = (title, gameId, type, secondaryType, price, description) => {
     this.setState({ loading: !this.state.loading });
     setTimeout(() => {
-      this.props.submitListing(title, gameId, type, price, description).then(() => {
+      this.props.submitListing(title, gameId, type, secondaryType, price, description).then(() => {
         this.setState({ loading: !this.state.loading }); // stop showing loading
         // check if user is registered using the state registered in redux
         if (this.props.isSubmitted) {

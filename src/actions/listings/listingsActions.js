@@ -34,7 +34,7 @@ function submitListingFailed() {
     type: types.SUBMIT_LISTING_FAILED,
   };
 }
-export function submitListing(title, game_id, type, price, description) {
+export function submitListing(title, game_id, type, secondaryType, price, description) {
   return function (dispatch) {
     return axios({
       method: 'post',
@@ -43,6 +43,7 @@ export function submitListing(title, game_id, type, price, description) {
         title,
         game_id,
         type,
+        secondary_type: secondaryType,
         asking_price: price,
         description,
       },
