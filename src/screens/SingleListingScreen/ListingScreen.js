@@ -1,11 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import {ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert, Button} from 'react-native';
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert, Button } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as listingsAction from "../../actions/listings/listingsActions";
+import * as listingsAction from '../../actions/listings/listingsActions';
+import * as offerAction from '../../actions/offers/offersActions';
 
 class ListingScreen extends React.Component {
   constructor(props) {
@@ -31,8 +32,17 @@ class ListingScreen extends React.Component {
       },
     });
   }
-  onPressAcceptOffer(offer){
-
+  onPressAcceptOffer(offerId) {
+    this.props.acceptOffer(this.listing.id, offerId).then(() => {
+      if (this.props.offerAccepted) {
+        Alert.alert(
+          'Offer Accepted',
+          'Please check your email for further instructions',
+        );
+      } else {
+        Alert.alert('Something went wrong');
+      }
+    });
   }
   onPressOffer(listing) {
     this.props.navigator.showLightBox({
@@ -51,11 +61,11 @@ class ListingScreen extends React.Component {
       'Report',
       'Do you wish to report this listing?',
       [
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Report', onPress: () => this.props.reportListing().then(() => Alert.alert('Report Successful'))},
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'Report', onPress: () => this.props.reportListing(this.listing.id).then(() => Alert.alert('Report Successful')) },
       ],
-      { cancelable: false }
-    )
+      { cancelable: false },
+    );
   }
   render() {
     return (
@@ -69,11 +79,11 @@ class ListingScreen extends React.Component {
           <View style={styles.top}>
             <Text style={styles.title}>{this.listing.title}</Text>
             <Text style={styles.type}>{this.listing.type.toUpperCase()}
-            {
+              {
               this.listing.secondary_type
-              ?  <Text style={[styles.text, styles.type]}>
+              ? <Text style={[styles.text, styles.type]}>
               /{this.listing.secondary_type.toUpperCase()}
-              </Text>
+                </Text>
               : false
             }
             </Text>
@@ -101,7 +111,7 @@ class ListingScreen extends React.Component {
                     </Text>
                     <Text style={styles.typeInverse}>{offer.type.toUpperCase()}
 
-                      </Text>
+                    </Text>
                   </View>
                   {
                     offer.type === 'money'
@@ -113,11 +123,11 @@ class ListingScreen extends React.Component {
                   <Text style={styles.date}>{moment(offer.created_at.data).fromNow()}</Text>
                   <TouchableOpacity
                     style={styles.acceptButtonContainer}
-                    onPress={() => this.onPressAcceptOffer(offer)}
+                    onPress={() => this.onPressAcceptOffer(offer.id)}
                   >
                     <Text style={styles.buttonText}>ACCEPT OFFER</Text>
                   </TouchableOpacity>
-                  <View style = {styles.lineStyle} />
+                  <View style={styles.lineStyle} />
                 </View>
               ))
             }
@@ -183,7 +193,7 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 12,
   },
-  username:{
+  username: {
     marginTop: 5,
     marginBottom: 3,
 
@@ -213,22 +223,22 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20,
   },
-  editButtonContainer:{
+  editButtonContainer: {
     backgroundColor: '#cccc00',
     padding: 10,
     marginTop: 20,
   },
-  acceptButtonContainer:{
+  acceptButtonContainer: {
     backgroundColor: '#841584',
     padding: 4,
     marginTop: 15,
   },
-  lineStyle:{
+  lineStyle: {
     borderWidth: 0.5,
-    borderColor:'black',
-    margin:10,
+    borderColor: 'black',
+    margin: 10,
   },
-  reportButtonContainer:{
+  reportButtonContainer: {
     backgroundColor: '#b30000',
     padding: 10,
     marginTop: 20,
@@ -257,12 +267,14 @@ function mapStateToProps(state) {
   return {
     authenticatedUser: state.authentication.user,
     listingReported: state.listings.listingReported,
+    offerAccepted: state.offers.offerAccepted,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     reportListing: bindActionCreators(listingsAction.reportListing, dispatch),
+    acceptOffer: bindActionCreators(offerAction.acceptOffer, dispatch),
   };
 }
-export default connect(mapStateToProps,mapDispatchToProps)(ListingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ListingScreen);
 

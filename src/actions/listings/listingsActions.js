@@ -77,14 +77,11 @@ export function editListing(listingId, title, price, description) {
 }
 
 
-export function reportListing(listingId, reason) {
+export function reportListing(listingId) {
   return function (dispatch) {
     return axios({
       method: 'post',
       url: `${URL_API}listings/${listingId}/report`,
-      data: {
-        reason,
-      },
     }).then((response) => {
       dispatch({
         type: types.LISTING_REPORT_SUCCESSFUL,

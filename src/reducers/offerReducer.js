@@ -18,6 +18,22 @@ export default function offerReducer(state = {}, action) {
           offerSubmitted: false,
         },
       );
+    case types.ACCEPT_OFFER_FAILED:
+      return Object.assign(
+        {},
+        state,
+        {
+          offerAccepted: false,
+        },
+      );
+    case types.ACCEPT_OFFER_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          offerAccepted: true,
+        },
+      );
     default:
       return state;
   }
