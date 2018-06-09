@@ -90,14 +90,7 @@ class ListingScreen extends React.Component {
                     <Text>
                       {offer.user.name.charAt(0).toUpperCase() + offer.user.name.slice(1)}
                     </Text>
-                    //Accept Offers
-                    <TouchableOpacity
-                      style={styles.acceptButtonContainer}
-                      onPress={() => this.onPressAcceptOffer(offer)}
-                    >
-                    >
-                      <Text style={styles.buttonText}>ACCEPT OFFER</Text>
-                    </TouchableOpacity>
+
                     <Text style={styles.typeInverse}>{offer.type.toUpperCase()}</Text>
                   </View>
                   {
@@ -106,7 +99,15 @@ class ListingScreen extends React.Component {
                       : false
                   }
                   <Text>{offer.text}</Text>
+
                   <Text style={styles.date}>{moment(offer.created_at.data).fromNow()}</Text>
+                  <TouchableOpacity
+                    style={styles.acceptButtonContainer}
+                    onPress={() => this.onPressAcceptOffer(offer)}
+                  >
+                    <Text style={styles.buttonText}>ACCEPT OFFER</Text>
+                  </TouchableOpacity>
+                  <View style = {styles.lineStyle} />
                 </View>
               ))
             }
@@ -124,7 +125,7 @@ class ListingScreen extends React.Component {
           {
             this.props.authenticatedUser.id === this.listing.user.id
               ? <TouchableOpacity
-                style={styles.buttonContainer}
+                style={styles.editButtonContainer}
                 underlayColor="blue"
                 onPress={() => this.onPressEdit(this.props.listing)}
               >
@@ -135,7 +136,7 @@ class ListingScreen extends React.Component {
           {
             this.props.authenticatedUser.id !== this.listing.user.id
               ? <TouchableOpacity
-                style={styles.buttonContainer}
+                style={styles.reportButtonContainer}
                 underlayColor="blue"
                 onPress={() => this.onPressReport(this.props.listing.id)}
               >
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
   },
@@ -181,6 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   sectionLabel: {
+    fontWeight: 'bold',
     fontSize: 15,
     color: '#000',
     marginTop: 5,
@@ -192,13 +194,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonContainer: {
-    backgroundColor: '#34495e',
+    backgroundColor: '#0099ff',
+    padding: 10,
+    marginTop: 20,
+  },
+  editButtonContainer:{
+    backgroundColor: '#cccc00',
     padding: 10,
     marginTop: 20,
   },
   acceptButtonContainer:{
     backgroundColor: '#841584',
+    padding: 4,
+    marginTop: 15,
+  },
+  lineStyle:{
+    borderWidth: 0.5,
+    borderColor:'black',
+    margin:10,
+  },
+  reportButtonContainer:{
+    backgroundColor: '#b30000',
     padding: 10,
+    marginTop: 20,
   },
   buttonText: {
     textAlign: 'center',
@@ -218,7 +236,6 @@ ListingScreen.propTypes = {
   listing: PropTypes.object.isRequired,
   navigator: PropTypes.object.isRequired,
   authenticatedUser: PropTypes.object.isRequired,
-  report: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
