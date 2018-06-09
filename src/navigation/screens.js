@@ -7,7 +7,6 @@ import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import SubmitListingsScreen from '../screens/ListingsScreen/SubmitListingsScreen';
 import EditListingScreen from '../screens/ListingsScreen/EditListingScreen';
 import SubmitOfferComponent from '../components/Listings/SubmitOffer';
-import Report from '../components/Listings/Report';
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('screen.LoginScreen', () => LoginScreen, store, Provider);
@@ -18,5 +17,4 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent('screen.SubmitListingsScreen', () => SubmitListingsScreen, store, Provider);
   Navigation.registerComponent('screen.EditListingScreen', () => EditListingScreen, store, Provider);
   Navigation.registerComponent('screen.SubmitOffer', () => SubmitOfferComponent, store, Provider);
-  Navigation.registerComponent('screen.Report', () => Report, store, Provider);
 }

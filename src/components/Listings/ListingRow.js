@@ -17,7 +17,16 @@ class ListingRow extends React.Component {
         <View style={styles.content}>
           <View style={styles.top}>
             <Text style={[styles.text, styles.title]}>{this.props.listing.title}</Text>
-            <Text style={[styles.text, styles.type]}>{this.props.listing.type.toUpperCase()}</Text>
+            <Text style={[styles.text, styles.type]}>{this.props.listing.type.toUpperCase()}
+              {
+                this.props.listing.secondary_type
+                  ?  <Text style={[styles.text, styles.type]}>
+                    /{this.props.listing.secondary_type.toUpperCase()}
+                  </Text>
+                  : false
+              }
+              </Text>
+
           </View>
           {
             this.props.listing.asking_price

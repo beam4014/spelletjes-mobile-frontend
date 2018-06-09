@@ -5,7 +5,7 @@ import {ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert, Butt
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as listingActions from '../../actions/listings/listingsActions';
+import * as listingsAction from "../../actions/listings/listingsActions";
 
 class ListingScreen extends React.Component {
   constructor(props) {
@@ -47,16 +47,15 @@ class ListingScreen extends React.Component {
     });
   }
   onPressReport() {
-    this.props.navigator.showLightBox({
-      screen: 'screen.Report',
-      passProps: {
-        listingId: this.listing.id,
-      },
-      style: {
-        backgroundBlur: 'dark',
-        tapBackgroundToDismiss: true,
-      },
-    });
+    Alert.alert(
+      'Report',
+      'Do you wish to report this listing?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Report', onPress: () => this.props.reportListing().then(() => Alert.alert('Report Successful'))},
+      ],
+      { cancelable: false }
+    )
   }
   render() {
     return (
@@ -69,7 +68,15 @@ class ListingScreen extends React.Component {
           <Text style={styles.username}>{this.listing.user.data.name} ~ {this.listing.user.data.rating} points</Text>
           <View style={styles.top}>
             <Text style={styles.title}>{this.listing.title}</Text>
-            <Text style={styles.type}>{this.listing.type.toUpperCase()}</Text>
+            <Text style={styles.type}>{this.listing.type.toUpperCase()}
+            {
+              this.listing.secondary_type
+              ?  <Text style={[styles.text, styles.type]}>
+              /{this.listing.secondary_type.toUpperCase()}
+              </Text>
+              : false
+            }
+            </Text>
           </View>
           {
             this.props.listing.asking_price
@@ -92,8 +99,9 @@ class ListingScreen extends React.Component {
                       {offer.user.data.name.charAt(0).toUpperCase() + offer.user.data.name.slice(1)}
                        ~ {offer.user.data.rating} points
                     </Text>
+                    <Text style={styles.typeInverse}>{offer.type.toUpperCase()}
 
-                    <Text style={styles.typeInverse}>{offer.type.toUpperCase()}</Text>
+                      </Text>
                   </View>
                   {
                     offer.type === 'money'
@@ -251,6 +259,10 @@ function mapStateToProps(state) {
     listingReported: state.listings.listingReported,
   };
 }
-
-export default connect(mapStateToProps)(ListingScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    reportListing: bindActionCreators(listingsAction.reportListing, dispatch),
+  };
+}
+export default connect(mapStateToProps,mapDispatchToProps)(ListingScreen);
 
