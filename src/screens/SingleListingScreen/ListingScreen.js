@@ -133,7 +133,7 @@ class ListingScreen extends React.Component {
             }
           </View>
           {
-            this.props.authenticatedUser.id !== this.listing.user.id
+            this.props.authenticatedUser.id !== this.listing.user.data.id
               ? <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={() => this.onPressOffer(this.props.listing)}
@@ -143,7 +143,7 @@ class ListingScreen extends React.Component {
               : false
           }
           {
-            this.props.authenticatedUser.id === this.listing.user.id
+            this.props.authenticatedUser.id === this.listing.user.data.id
               ? <TouchableOpacity
                 style={styles.editButtonContainer}
                 underlayColor="blue"
@@ -154,7 +154,7 @@ class ListingScreen extends React.Component {
               : false
           }
           {
-            this.props.authenticatedUser.id !== this.listing.user.id
+            this.props.authenticatedUser.id !== this.listing.user.data.id
               ? <TouchableOpacity
                 style={styles.reportButtonContainer}
                 underlayColor="blue"

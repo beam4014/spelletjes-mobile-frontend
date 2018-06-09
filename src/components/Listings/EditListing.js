@@ -11,19 +11,25 @@ class EditListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'Luigi and his brother',
-      game_id: '5',
-      type: 'sell',
-      price: 22,
-      description: 'It\'s and old game where his brother wears red.',
+      title: '',
+      game_id: undefined,
+      type: '',
+      price: undefined,
+      description: '',
     };
     this.onChangeTextTitle = this.onChangeTextTitle.bind(this);
-    this.onChangeTextGameId = this.onChangeTextGameId.bind(this);
-    this.onChangeTextType = this.onChangeTextType.bind(this);
     this.onChangeTextPrice = this.onChangeTextPrice.bind(this);
     this.onChangeTextDescription = this.onChangeTextDescription.bind(this);
-    this.onSelectType = this.onSelectType.bind(this);
     this.onPressSubmit = this.onPressSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(this.props.type);
+    this.setState({
+      title: this.props.title,
+      price: this.props.price,
+      description: this.props.description,
+    });
   }
 
   onChangeTextTitle(text) {
@@ -31,19 +37,6 @@ class EditListing extends React.Component {
       title: text,
     });
   }
-
-  onChangeTextGameId(text) {
-    this.setState({
-      game_id: text,
-    });
-  }
-
-  onChangeTextType(text) {
-    this.setState({
-      type: text,
-    });
-  }
-
   onChangeTextPrice(text) {
     this.setState({
       price: text,
@@ -56,11 +49,6 @@ class EditListing extends React.Component {
     });
   }
 
-  onSelectType(type) {
-    this.setState({
-      type,
-    });
-  }
 
   onPressSubmit() {
     console.log(this.validate());
@@ -81,12 +69,10 @@ class EditListing extends React.Component {
       return false;
     } else if (_.isEmpty(this.state.description)) {
       return false;
-    } else if (_.isEmpty(this.state.type)) {
-      return false;
-    } else if (_.isEmpty(this.state.game_id)) {
-      return false;
-    } else if (_.isEmpty(this.state.price)) {
-      return false;
+    } else if (this.props.type !== 'trade') {
+      if (_.isEmpty(this.state.price)) {
+        return false;
+      }
     }
 
     return true;
@@ -104,7 +90,7 @@ class EditListing extends React.Component {
           style={styles.input}
         />
         {
-          this.state.type !== 'trade'
+          this.props.type !== 'trade'
             ? <TextInput
               value={this.state.price}
               keyboardType={'numeric'}
