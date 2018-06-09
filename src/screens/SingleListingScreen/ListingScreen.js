@@ -66,6 +66,7 @@ class ListingScreen extends React.Component {
           source={{ uri: 'http://images.vg247.com/current//2013/11/mario-party-island-tour-header-112313.jpg' }}
         />
         <View style={styles.content}>
+          <Text style={styles.username}>{this.listing.user.data.name} ~ {this.listing.user.data.rating} points</Text>
           <View style={styles.top}>
             <Text style={styles.title}>{this.listing.title}</Text>
             <Text style={styles.type}>{this.listing.type.toUpperCase()}</Text>
@@ -88,7 +89,8 @@ class ListingScreen extends React.Component {
                 <View key={offer.id} style={styles.offerContainer}>
                   <View style={styles.top}>
                     <Text>
-                      {offer.user.name.charAt(0).toUpperCase() + offer.user.name.slice(1)}
+                      {offer.user.data.name.charAt(0).toUpperCase() + offer.user.data.name.slice(1)}
+                       ~ {offer.user.data.rating} points
                     </Text>
 
                     <Text style={styles.typeInverse}>{offer.type.toUpperCase()}</Text>
@@ -172,6 +174,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#e67e22',
     padding: 5,
     fontSize: 12,
+  },
+  username:{
+    marginTop: 5,
+    marginBottom: 3,
+
   },
   title: {
     fontSize: 18,

@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
+import { Alert,Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/myListings/myListingsActions';
 import ListingsList from '../../components/Listings/ListingsList';
+import {startLogin} from "../../navigation/AppNavigator";
 
 class MyListingsScreen extends React.Component {
   constructor(props) {
@@ -12,6 +13,37 @@ class MyListingsScreen extends React.Component {
     this.state = {
       listings: [],
     };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.onPressLogout = this.onPressLogout.bind(this);
+    this.props.navigator.setButtons({
+      rightButtons:[{
+        title: 'Logout', // for a textual button, provide the button title (label)
+        id: 'logout',
+      }]
+    })
+  }
+
+  onNavigatorEvent(event){
+    if(event.type === 'NavBarButtonPress'){
+      if(event.id === 'logout'){
+      //  Logout function
+        Alert.alert(
+          'Logout',
+          'Do you wish to logout',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'OK', onPress: () => this.onPressLogout()},
+          ],
+          { cancelable: false }
+        )
+      }
+    }
+
+  }
+
+  onPressLogout() {
+    AsyncStorage.clear();
+    startLogin();
   }
 
   componentDidMount() {
