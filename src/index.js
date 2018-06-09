@@ -33,6 +33,3 @@ async function initializeApp() {
 }
 
 initializeApp();
-
-//http://localhost:8081/debugger-ui/
-//chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security  ***for web-security

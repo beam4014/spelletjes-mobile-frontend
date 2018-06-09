@@ -11,7 +11,6 @@ import _ from 'lodash';
 import * as authenticationAction from '../../actions/authentication/authenticationActions';
 
 class LoginForm extends React.Component {
-  defaultState = { data: null, error: null };
   constructor(props) {
     super(props);
     this.state = {
@@ -36,24 +35,22 @@ class LoginForm extends React.Component {
     });
   }
   onPressLogin() {
-      this.setState({
-        loading: true,
-      });
-      this.props.login(this.state.username, this.state.password)
-        .then(() => {
-          this.setState({
-            loading: false,
-          });
-          if (this.props.token) {
-            AsyncStorage.setItem('@spelletjes/token', this.props.token);
-            startApp();
-          } else {
-            Alert.alert('Something went wrong. Please try again...');
-            this.state = this.defaultState;
-          }
+    this.setState({
+      loading: true,
+    });
+    this.props.login(this.state.username, this.state.password)
+      .then(() => {
+        this.setState({
+          loading: false,
         });
-    }
-
+        if (this.props.token) {
+          AsyncStorage.setItem('@spelletjes/token', this.props.token);
+          startApp();
+        } else {
+          Alert.alert('Something went wrong. Please try again...');
+        }
+      });
+  }
   render() {
     if (this.state.loading) {
       return (
@@ -77,6 +74,8 @@ class LoginForm extends React.Component {
           underlineColorAndroid="rgba(0,0,0,0)"
           onChangeText={this.onChangeTextUsername}
           style={styles.input}
+          value={this.state.username}
+          ref={(ref) => this.textInputEmail = ref}
         />
         <TextInput
           placeholderTextColor="rgba(255,255,255,0.7)"
@@ -84,7 +83,9 @@ class LoginForm extends React.Component {
           placeholder="Password"
           secureTextEntry
           style={styles.input}
+          value={this.state.password}
           onChangeText={this.onChangeTextPassword}
+          ref={(ref) => this.textInputPassword = ref}
         />
         <TouchableOpacity
           disabled={_.isEmpty(this.state.username) || _.isEmpty(this.state.password)}
@@ -94,7 +95,9 @@ class LoginForm extends React.Component {
         >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
-        <Text />
+        <Text>
+          {this.state.username} {this.state.password}
+        </Text>
       </KeyboardAwareScrollView>
     );
   }

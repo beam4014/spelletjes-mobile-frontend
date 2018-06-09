@@ -8,7 +8,7 @@ class ListingsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onPressAcceptOffer = this.onPressListing.bind(this);
+    this.onPressListing = this.onPressListing.bind(this);
   }
   onPressListing(listing) {
     this.props.navigator.push({

@@ -26,7 +26,7 @@ export function authenticate(username, password) {
     return axios.post(`${URL}oauth/token`, {
       grant_type: 'password',
       client_id: '1',
-      client_secret: 'p5AxHhllo8RCtR2EkVjsXugZX3HJHnAqeqPiE76A',
+      client_secret: 'qyOBHF0YevlB7wcGGmoufTyjd9zMuR6UKfAF4wkw',
       username,
       password,
       scope: '',
@@ -70,6 +70,7 @@ export function getAuthenticatedUserData(token) {
       user: response.data.data,
     })).catch(error => dispatch({
       user: null,
+      type: types.GET_USER_DATA_FAILURE,
     }));
   };
 }
