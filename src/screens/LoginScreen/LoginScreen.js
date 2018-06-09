@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import LoginForm from '../../components/Login/LoginForm';
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container}>
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
@@ -37,7 +38,7 @@ export default class Login extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 
@@ -66,6 +67,8 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     padding: 10,
+    margin: 20,
+    marginTop: 0,
     backgroundColor: '#ccc',
   },
   registerButtonText: {
