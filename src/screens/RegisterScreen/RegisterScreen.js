@@ -1,11 +1,10 @@
 import React from 'react';
-import Spinner from 'react-native-loading-spinner-overlay';
-import RegisterForm from '../../components/Register/RegisterForm';
-import * as authenticationAction from '../../actions/authentication/authenticationActions';
-
-import { StyleSheet, Text, View, Alert } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, TextInput } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Spinner from 'react-native-loading-spinner-overlay';
+import * as authenticationAction from '../../actions/authentication/authenticationActions';
 
 
 class RegisterScreen extends React.Component {
@@ -13,14 +12,56 @@ class RegisterScreen extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      name: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+      phoneNumber: '',
     };
     this.onPressRegister = this.onPressRegister.bind(this);
+    this.onChangeTextName = this.onChangeTextName.bind(this);
+    this.onChangeTextPassword = this.onChangeTextPassword.bind(this);
+    this.onChangeTextConfirmPassword = this.onChangeTextConfirmPassword.bind(this);
+    this.onChangeTextEmail = this.onChangeTextEmail.bind(this);
+    this.onChangeTextPhoneNumber = this.onChangeTextPhoneNumber.bind(this);
+    this.onPressRegister = this.onPressRegister.bind(this);
   }
-
-  onPressRegister(name, email, password, passwordConfirmation, phoneNumber) {
+  onChangeTextName(text) {
+    this.setState({
+      name: text,
+    });
+  }
+  onChangeTextPassword(text) {
+    this.setState({
+      password: text,
+    });
+  }
+  onChangeTextConfirmPassword(text) {
+    this.setState({
+      confirmPassword: text,
+    });
+  }
+  onChangeTextEmail(text) {
+    console.log(text);
+    this.setState({
+      email: text,
+    });
+  }
+  onChangeTextPhoneNumber(text) {
+    this.setState({
+      phoneNumber: text,
+    });
+  }
+  onPressRegister() {
     this.setState({ loading: !this.state.loading });
     setTimeout(() => {
-      this.props.register(name, email, password, passwordConfirmation, phoneNumber).then(() => {
+      this.props.register(
+        this.state.name,
+        this.state.email,
+        this.state.password,
+        this.state.confirmPassword,
+        this.state.phoneNumber
+      ).then(() => {
         this.setState({ loading: !this.state.loading }); // stop showing loading
         // check if user is registered using the state registered in redux
         if (this.props.isRegistered) {
@@ -50,11 +91,67 @@ class RegisterScreen extends React.Component {
       );
     }
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView style={styles.container}>
         <View style={styles.content}>
-          <RegisterForm registerClicked={this.onPressRegister} />
+          <TextInput
+            placeholder="Name"
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            autoCorrect={false}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            onChangeText={(text) => this.onChangeTextName(text)}
+            style={styles.input}
+            value={this.state.name}
+          />
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            onChangeText={(text) => this.onChangeTextEmail(text)}
+            style={styles.input}
+            value={this.state.email}
+          />
+          <TextInput
+            placeholder="Phone Number"
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            keyboardType="numeric"
+            autoCapitalize="none"
+            autoCorrect={false}
+            underlineColorAndroid="rgba(0,0,0,0)"
+            onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
+            style={styles.input}
+            value={this.state.phoneNumber}
+          />
+          <TextInput
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            underlineColorAndroid="rgba(0,0,0,0)"
+            placeholder="Password"
+            secureTextEntry
+            style={styles.input}
+            onChangeText={(text) => this.onChangeTextPassword(text)}
+            value={this.state.password}
+          />
+          <TextInput
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            underlineColorAndroid="rgba(0,0,0,0)"
+            placeholder="Confirm Password"
+            secureTextEntry
+            style={styles.input}
+            onChangeText={(text) => this.onChangeTextConfirmPassword(text)}
+            value={this.state.confirmPassword}
+          />
+
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.onPressRegister}
+            underlayColor="blue"
+          >
+            <Text style={styles.buttonText}>REGISTER</Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 
@@ -65,8 +162,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#e67e22',
   },
   content: {
-    flex: 1,
+    // flex: 1,
     marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  input: {
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginBottom: 10,
+    color: '#FFF',
+    paddingHorizontal: 10,
+  },
+  buttonContainer: {
+    backgroundColor: '#34495e',
+    padding: 10,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontWeight: '700',
   },
 });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { StyleSheet, Text, Alert, AsyncStorage, TextInput, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, Alert, AsyncStorage, TextInput, TouchableOpacity, View} from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { startApp } from '../../navigation/AppNavigator';
@@ -64,7 +64,7 @@ class LoginForm extends React.Component {
     }
 
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <View style={styles.container}>
         <TextInput
           placeholder="Email"
           placeholderTextColor="rgba(255,255,255,0.7)"
@@ -95,10 +95,7 @@ class LoginForm extends React.Component {
         >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
-        <Text>
-          {this.state.username} {this.state.password}
-        </Text>
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
