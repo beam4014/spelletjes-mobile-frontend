@@ -22,12 +22,12 @@ export function startApp() {
       {
         screen: 'screen.SubmitListingsScreen',
         title: 'Submit Listing',
-        icon: require('../images/icons/listings.png'),
+        icon: require('../images/icons/submit_Listing.png'),
       },
       {
         screen: 'screen.MyListingsScreen',
         title: 'My Listings',
-        icon: require('../images/icons/listings.png'),
+        icon: require('../images/icons/my-listing.png'),
       },
     ],
     initialRouteName: 'screen.ListingsScreen',

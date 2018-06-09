@@ -31,3 +31,32 @@ export function submitOffer(listingId, price, type, description) {
     });
   };
 }
+function acceptOfferSuccessful(data) {
+  return {
+    type: types.ACCEPT_OFFER_SUCCESSFUL,
+    data,
+  };
+}
+
+function acceptOfferFailed() {
+  return {
+    type: types.ACCEPT_OFFER_FAILED,
+  };
+}
+export function acceptOffer(offerId) {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}listings/${offerId}/accept`,
+      data: {
+        type,
+        price: price || null,
+        text: description,
+      },
+    }).then((response) => {
+      dispatch(acceptOfferSuccessful(response.data));
+    }).catch((error) => {
+      dispatch(acceptOfferFailed());
+    });
+  };
+}

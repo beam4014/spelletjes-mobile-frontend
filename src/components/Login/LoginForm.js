@@ -6,11 +6,12 @@ import { StyleSheet, Text, Alert, AsyncStorage, TextInput, TouchableOpacity } fr
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { startApp } from '../../navigation/AppNavigator';
-
+import _ from 'lodash';
 
 import * as authenticationAction from '../../actions/authentication/authenticationActions';
 
 class LoginForm extends React.Component {
+  defaultState = { data: null, error: null };
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +24,7 @@ class LoginForm extends React.Component {
     this.onChangeTextUsername = this.onChangeTextUsername.bind(this);
     this.onPressLogin = this.onPressLogin.bind(this);
   }
+
   onChangeTextUsername(text) {
     this.setState({
       username: text,
@@ -34,26 +36,25 @@ class LoginForm extends React.Component {
     });
   }
   onPressLogin() {
-    this.setState({
-      loading: true,
-    });
-    this.props.login(this.state.username, this.state.password)
-      .then(() => {
-        this.setState({
-          loading: false,
-        });
-        if (this.props.token) {
-          AsyncStorage.setItem('@spelletjes/token', this.props.token);
-          startApp();
-        } else {
-          Alert.alert('Something went wrong. Please try again...');
-        }
+      this.setState({
+        loading: true,
       });
-  }
-
+      this.props.login(this.state.username, this.state.password)
+        .then(() => {
+          this.setState({
+            loading: false,
+          });
+          if (this.props.token) {
+            AsyncStorage.setItem('@spelletjes/token', this.props.token);
+            startApp();
+          } else {
+            Alert.alert('Something went wrong. Please try again...');
+            this.state = this.defaultState;
+          }
+        });
+    }
 
   render() {
-
     if (this.state.loading) {
       return (
         <Spinner
@@ -86,6 +87,7 @@ class LoginForm extends React.Component {
           onChangeText={this.onChangeTextPassword}
         />
         <TouchableOpacity
+          disabled={_.isEmpty(this.state.username) || _.isEmpty(this.state.password)}
           style={styles.buttonContainer}
           onPress={this.onPressLogin}
           underlayColor="blue"

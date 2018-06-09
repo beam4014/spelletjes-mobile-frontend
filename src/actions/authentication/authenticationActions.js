@@ -26,7 +26,7 @@ export function authenticate(username, password) {
     return axios.post(`${URL}oauth/token`, {
       grant_type: 'password',
       client_id: '1',
-      client_secret: 'EY4vhbxToKvh0kiB7AOHQ3i3erypODSXfebwIeC2',
+      client_secret: 'p5AxHhllo8RCtR2EkVjsXugZX3HJHnAqeqPiE76A',
       username,
       password,
       scope: '',

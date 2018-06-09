@@ -4,6 +4,7 @@ import listings from './listingsReducer';
 import myListings from './myListingsReducer';
 import offers from './offerReducer';
 
+
 const appReducer = combineReducers({
   authentication,
   listings,

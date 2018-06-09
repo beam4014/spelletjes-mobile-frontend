@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert } from 'react-native';
+import {ScrollView, Text, StyleSheet, View, TouchableOpacity, Image, Alert, Button} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -30,6 +30,9 @@ class ListingScreen extends React.Component {
         description: listing.description,
       },
     });
+  }
+  onPressAcceptOffer(offer){
+
   }
   onPressOffer(listing) {
     this.props.navigator.showLightBox({
@@ -87,6 +90,14 @@ class ListingScreen extends React.Component {
                     <Text>
                       {offer.user.name.charAt(0).toUpperCase() + offer.user.name.slice(1)}
                     </Text>
+                    //Accept Offers
+                    <TouchableOpacity
+                      style={styles.acceptButtonContainer}
+                      onPress={() => this.onPressAcceptOffer(offer)}
+                    >
+                    >
+                      <Text style={styles.buttonText}>ACCEPT OFFER</Text>
+                    </TouchableOpacity>
                     <Text style={styles.typeInverse}>{offer.type.toUpperCase()}</Text>
                   </View>
                   {
@@ -104,7 +115,6 @@ class ListingScreen extends React.Component {
             this.props.authenticatedUser.id !== this.listing.user.id
               ? <TouchableOpacity
                 style={styles.buttonContainer}
-                underlayColor="blue"
                 onPress={() => this.onPressOffer(this.props.listing)}
               >
                 <Text style={styles.buttonText}>OFFER</Text>
@@ -185,6 +195,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#34495e',
     padding: 10,
     marginTop: 20,
+  },
+  acceptButtonContainer:{
+    backgroundColor: '#841584',
+    padding: 10,
   },
   buttonText: {
     textAlign: 'center',
