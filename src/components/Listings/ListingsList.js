@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 10,
-    marginBottom: 5,
     marginLeft: 15,
     marginRight: 15,
   },

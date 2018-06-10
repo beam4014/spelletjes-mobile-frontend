@@ -27,7 +27,7 @@ class SubmitListingScreen extends React.Component {
           setTimeout(() => {
             this.props.navigator.pop();
             setTimeout(() => {
-              Alert.alert('Submit Successful');
+              Alert.alert('Listing Submission is Successful');
             }, 200); // show alert of successful registration
           }, 300);
         } else {
@@ -42,6 +42,16 @@ class SubmitListingScreen extends React.Component {
 
 
   render() {
+    if (this.state.loading) {
+      return (
+        <Spinner
+          visible={this.state.loading}
+          textContent="Submitting Listing"
+          color="#FFFFFF"
+          overlayColor="#e67e22"
+        />
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.content}>

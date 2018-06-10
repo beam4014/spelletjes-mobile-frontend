@@ -26,6 +26,13 @@ class ListingsScreen extends React.Component {
     AsyncStorage.getItem('@spelletjes/token').then((token) => {
       this.props.getAuthenticatedUserData(token);
     });
+    this.props.getUserVerificationStatus().then(() => {
+      if (!this.props.verified) {
+        this.props.navigator.showModal({
+          screen: 'screen.SmsVerificationScreen',
+        });
+      }
+    });
     this.props.fetchListings().then(() => {
       if (this.props.listings.data.length > 0) {
         this.setState({
@@ -88,6 +95,7 @@ function mapStateToProps(state) {
   return {
     listings: state.listings,
     user: state.authentication.user,
+    verified: state.authentication.verified,
   };
 }
 
@@ -95,6 +103,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchListings: bindActionCreators(listingsAction.fetchListing, dispatch),
     getAuthenticatedUserData: bindActionCreators(authenticationActions.getAuthenticatedUserData, dispatch),
+    getUserVerificationStatus: bindActionCreators(authenticationActions.getUserVerificationStatus, dispatch),
   };
 }
 

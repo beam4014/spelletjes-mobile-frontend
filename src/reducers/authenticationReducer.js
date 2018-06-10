@@ -26,6 +26,14 @@ export default function authenticationReducer(state = {}, action) {
           registered: true,
         },
       );
+    case types.USER_VERIFICATION_STATUS_SUCCESS:
+      return Object.assign(
+        {},
+        state,
+        {
+          verified: action.verified,
+        },
+      );
     case types.REGISTER_FAILED:
       return Object.assign(
         {},
@@ -48,6 +56,38 @@ export default function authenticationReducer(state = {}, action) {
         state,
         {
           user: null,
+        },
+      );
+    case types.SMS_VERIFICATION_SENT_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          codeSent: true,
+        },
+      );
+    case types.SMS_VERIFICATION_SENT_FAILED:
+      return Object.assign(
+        {},
+        state,
+        {
+          codeSent: false,
+        },
+      );
+    case types.USER_VERIFIED:
+      return Object.assign(
+        {},
+        state,
+        {
+          verified: true,
+        },
+      );
+    case types.USER_NOT_VERIFIED:
+      return Object.assign(
+        {},
+        state,
+        {
+          verified: false,
         },
       );
     default:

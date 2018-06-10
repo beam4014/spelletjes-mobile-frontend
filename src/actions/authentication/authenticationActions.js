@@ -26,7 +26,7 @@ export function authenticate(username, password) {
     return axios.post(`${URL}oauth/token`, {
       grant_type: 'password',
       client_id: '1',
-      client_secret: 'qyOBHF0YevlB7wcGGmoufTyjd9zMuR6UKfAF4wkw',
+      client_secret: 'oTKBt93bz5MAHxXWg9ZCQlqPHaunWQ5tbKK7YtLO',
       username,
       password,
       scope: '',
@@ -35,7 +35,7 @@ export function authenticate(username, password) {
         setAxiosToken(response.data.access_token);
         dispatch(authenticationSuccessful(response.data.access_token));
       })
-      .catch(error => dispatch(authenticationFailed()));
+      .catch(() => dispatch(authenticationFailed()));
   };
 }
 
@@ -49,10 +49,10 @@ export function register(name, email, password, confirmPassword, phoneNo) {
       password_confirmation: confirmPassword,
       phone_number: phoneNo,
     })
-      .then(response => dispatch({
+      .then(() => dispatch({
         type: types.REGISTER_SUCCESSFUL,
       }))
-      .catch(error => dispatch({
+      .catch(() => dispatch({
         type: types.REGISTER_FAILED,
       }));
   };
@@ -68,9 +68,58 @@ export function getAuthenticatedUserData(token) {
     }).then(response => dispatch({
       type: types.GET_USER_DATA_SUCCESSFUL,
       user: response.data.data,
-    })).catch(error => dispatch({
+    })).catch(() => dispatch({
       user: null,
       type: types.GET_USER_DATA_FAILURE,
+    }));
+  };
+}
+
+export function getUserVerificationStatus() {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}sms/status`,
+    }).then((response) => {
+      dispatch({
+        type: types.USER_VERIFICATION_STATUS_SUCCESS,
+        verified: response.data.verified,
+      });
+      console.log(response);
+    }).catch(() => {
+      dispatch({
+        type: types.USER_VERIFICATION_STATUS_FAILED,
+        verified: false
+      });
+    });
+  };
+}
+
+export function sendSmsVerificationCode() {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}sms/generate`,
+    }).then(() => dispatch({
+      type: types.SMS_VERIFICATION_SENT_SUCCESSFUL,
+    })).catch(() => dispatch({
+      type: types.SMS_VERIFICATION_SENT_FAILED,
+    }));
+  };
+}
+
+export function verifyUser(code) {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}sms/verify`,
+      data: {
+        code,
+      },
+    }).then(() => dispatch({
+      type: types.USER_VERIFIED,
+    })).catch(() => dispatch({
+      type: types.USER_NOT_VERIFIED,
     }));
   };
 }
