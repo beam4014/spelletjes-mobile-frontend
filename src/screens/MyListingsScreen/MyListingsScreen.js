@@ -4,7 +4,7 @@ import { Alert, Text, View, StyleSheet, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/myListings/myListingsActions';
-import ListingsList from '../../components/Listings/ListingsList';
+import ListingsList from '../../components/listings/ListingsList';
 import { startLogin } from '../../navigation/AppNavigator';
 
 class MyListingsScreen extends React.Component {

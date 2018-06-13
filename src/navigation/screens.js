@@ -6,8 +6,8 @@ import MyListingScreen from '../screens/MyListingsScreen/MyListingsScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import SubmitListingsScreen from '../screens/ListingsScreen/SubmitListingsScreen';
 import EditListingScreen from '../screens/ListingsScreen/EditListingScreen';
-import SubmitOfferComponent from '../components/Listings/SubmitOffer';
-import SmsVerificationScreen from "../screens/SmsVerificationScreen/SmsVerificationScreen";
+import SubmitOfferComponent from '../components/listings/SubmitOffer';
+import SmsVerificationScreen from '../screens/SmsVerificationScreen/SmsVerificationScreen';
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('screen.LoginScreen', () => LoginScreen, store, Provider);

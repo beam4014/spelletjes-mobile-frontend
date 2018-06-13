@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import LoginForm from '../../components/Login/LoginForm';
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import LoginForm from '../../components/login/LoginForm';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class Login extends React.Component {
   constructor(props) {

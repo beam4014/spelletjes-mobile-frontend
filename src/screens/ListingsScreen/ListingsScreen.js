@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsAction from '../../actions/listings/listingsActions';
 import * as authenticationActions from '../../actions/authentication/authenticationActions';
-import ListingsList from '../../components/Listings/ListingsList';
+import ListingsList from '../../components/listings/ListingsList';
 import Tabs from './Tabs';
 
 

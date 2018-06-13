@@ -5,7 +5,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as listingsActions from '../../actions/listings/listingsActions';
-import EditListing from '../../components/Listings/EditListing';
+import EditListing from '../../components/listings/EditListing';
 
 class EditListingScreen extends React.Component {
   constructor(props) {
