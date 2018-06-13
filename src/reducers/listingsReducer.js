@@ -66,6 +66,38 @@ export default function fetchListingReducer(state = {}, action) {
           listingReported: false,
         },
       );
+    case types.FETCH_GAMES_FAILURE:
+      return Object.assign(
+        {},
+        state,
+        {
+          games: [],
+        },
+      );
+    case types.FETCH_GAMES_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          games: action.games,
+        },
+      );
+    case types.LISTING_DELETE_SUCCESSFUL:
+      return Object.assign(
+        {},
+        state,
+        {
+          deleted: true,
+        },
+      );
+    case types.LISTING_DELETE_FAILURE:
+      return Object.assign(
+        {},
+        state,
+        {
+          deleted: false,
+        },
+      );
     default:
       return state;
   }

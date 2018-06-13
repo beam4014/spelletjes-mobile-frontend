@@ -16,11 +16,17 @@ class SubmitListingScreen extends React.Component {
     };
     this.onPressSubmitListing = this.onPressSubmitListing.bind(this);
   }
-
-  onPressSubmitListing = (title, gameId, type, secondaryType, price, description) => {
+  componentDidMount() {
+    this.props.fetchGames().then(() => {
+      this.setState({
+        games: this.props.games,
+      });
+    });
+  }
+  onPressSubmitListing = (title, gameId, gameTitle, gameImage, type, secondaryType, price, description) => {
     this.setState({ loading: !this.state.loading });
     setTimeout(() => {
-      this.props.submitListing(title, gameId, type, secondaryType, price, description).then(() => {
+      this.props.submitListing(title, gameId, gameTitle, gameImage, type, secondaryType, price, description).then(() => {
         this.setState({ loading: !this.state.loading }); // stop showing loading
         // check if user is registered using the state registered in redux
         if (this.props.isSubmitted) {
@@ -58,7 +64,7 @@ class SubmitListingScreen extends React.Component {
           <SubmitListing
             title=""
             type=""
-            game=""
+            games={this.state.games}
             price=""
             description=""
             submitClicked={this.onPressSubmitListing}
@@ -85,11 +91,13 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     isSubmitted: state.listings.submittedListing,
+    games: state.listings.games,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    fetchGames: bindActionCreators(listingsActions.fetchGames, dispatch),
     submitListing: bindActionCreators(listingsActions.submitListing, dispatch),
   };
 }

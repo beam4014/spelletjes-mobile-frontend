@@ -18,7 +18,26 @@ export function fetchListing() {
   return function (dispatch) {
     return axios.get(`${URL_API}listings`)
       .then(response => dispatch(fetchListingSuccessful(response.data)))
-      .catch(error => dispatch(fetchListingFailed()));
+      .catch(() => dispatch(fetchListingFailed()));
+  };
+}
+
+
+export function fetchGames() {
+  return function (dispatch) {
+    return axios({
+      url: `${URL_API}games`,
+      method: 'get',
+    }).then((response) => {
+      dispatch({
+        type: types.FETCH_GAMES_SUCCESSFUL,
+        games: response.data,
+      });
+    }).catch(() => {
+      dispatch({
+        type: types.FETCH_GAMES_FAILURE,
+      });
+    });
   };
 }
 
@@ -34,14 +53,16 @@ function submitListingFailed() {
     type: types.SUBMIT_LISTING_FAILED,
   };
 }
-export function submitListing(title, game_id, type, secondaryType, price, description) {
+export function submitListing(title, gameId, gameTitle, gameImage, type, secondaryType, price, description) {
   return function (dispatch) {
     return axios({
       method: 'post',
       url: `${URL_API}listings/create`,
       data: {
         title,
-        game_id,
+        game_id: gameId,
+        game_title: gameTitle,
+        game_image: gameImage,
         type,
         secondary_type: secondaryType,
         asking_price: price,
@@ -49,7 +70,7 @@ export function submitListing(title, game_id, type, secondaryType, price, descri
       },
     }).then((response) => {
       dispatch(submitListingSuccessful(response.data));
-    }).catch((error) => {
+    }).catch(() => {
       dispatch(submitListingFailed());
     });
   };
@@ -64,11 +85,11 @@ export function editListing(listingId, title, price, description) {
         price,
         description,
       },
-    }).then((response) => {
+    }).then(() => {
       dispatch({
         type: types.EDIT_LISTING_SUCCESSFUL,
       });
-    }).catch((error) => {
+    }).catch(() => {
       dispatch({
         type: types.EDIT_LISTING_FAILED,
       });
@@ -76,17 +97,33 @@ export function editListing(listingId, title, price, description) {
   };
 }
 
+export function deleteListing(listingId) {
+  return function (dispatch) {
+    return axios({
+      method: 'post',
+      url: `${URL_API}listings/${listingId}/delete`,
+    }).then(() => {
+      dispatch({
+        type: types.LISTING_DELETE_SUCCESSFUL,
+      });
+    }).catch(() => {
+      dispatch({
+        type: types.LISTING_DELETE_FAILURE,
+      });
+    });
+  };
+}
 
 export function reportListing(listingId) {
   return function (dispatch) {
     return axios({
       method: 'post',
       url: `${URL_API}listings/${listingId}/report`,
-    }).then((response) => {
+    }).then(() => {
       dispatch({
         type: types.LISTING_REPORT_SUCCESSFUL,
       });
-    }).catch((error) => {
+    }).catch(() => {
       dispatch({
         type: types.LISTING_REPORT_FAILURE,
       });

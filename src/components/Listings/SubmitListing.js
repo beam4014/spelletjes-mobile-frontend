@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Alert, Text, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, StyleSheet, TextInput, TouchableOpacity, View, Picker } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,28 +17,30 @@ class SubmitListing extends React.Component {
       secondaryType: undefined,
       price: undefined,
       description: '',
+      selectedGame: 0,
+      selectedGameIndex: 0,
+      descriptionTotalCharacters: 0,
     };
     this.onChangeTextTitle = this.onChangeTextTitle.bind(this);
-    this.onChangeTextGameId = this.onChangeTextGameId.bind(this);
     this.onChangeTextType = this.onChangeTextType.bind(this);
     this.onChangeTextPrice = this.onChangeTextPrice.bind(this);
     this.onChangeTextDescription = this.onChangeTextDescription.bind(this);
     this.onSelectType = this.onSelectType.bind(this);
     this.onPressSubmit = this.onPressSubmit.bind(this);
+    this.onSelectGame = this.onSelectGame.bind(this);
   }
-
   onChangeTextTitle(text) {
     this.setState({
       title: text,
     });
   }
-
-  onChangeTextGameId(text) {
+  onSelectGame(gameId, itemIndex) {
     this.setState({
-      game_id: text,
+      game_id: gameId,
+      selectedGame: gameId,
+      selectedGameIndex: itemIndex,
     });
   }
-
   onChangeTextType(text) {
     this.setState({
       type: text,
@@ -52,8 +54,10 @@ class SubmitListing extends React.Component {
   }
 
   onChangeTextDescription(text) {
+    const textLength = text.length;
     this.setState({
       description: text,
+      descriptionTotalCharacters: textLength,
     });
   }
 
@@ -78,7 +82,9 @@ class SubmitListing extends React.Component {
     if (this.validate()) {
       this.props.submitClicked(
         this.state.title,
-        this.state.game_id,
+        this.state.selectedGame,
+        this.props.games[this.state.selectedGameIndex].name,
+        this.props.games[this.state.selectedGameIndex].cover.url,
         this.state.type,
         this.state.secondaryType,
         this.state.price,
@@ -96,8 +102,6 @@ class SubmitListing extends React.Component {
     } else if (_.isEmpty(this.state.description)) {
       return false;
     } else if (_.isEmpty(this.state.type)) {
-      return false;
-    } else if (_.isEmpty(this.state.game_id)) {
       return false;
     } else if (this.state.type === 'sell') {
       if (_.isEmpty(this.state.price)) {
@@ -120,13 +124,16 @@ class SubmitListing extends React.Component {
             onChangeText={this.onChangeTextTitle}
             style={styles.input}
           />
-          <TextInput
-            value={this.state.game_id}
-            underlineColorAndroid="orange"
-            placeholder="Game"
-            style={styles.input}
-            onChangeText={this.onChangeTextGameId}
-          />
+          <Picker
+            selectedValue={this.state.selectedGame}
+            onValueChange={(itemValue, itemIndex) => this.onSelectGame(itemValue, itemIndex)}
+          >
+            {
+              _.map(this.props.games, game => (
+                <Picker.Item key={game.id} label={game.name} value={game.id} />
+                ))
+            }
+          </Picker>
           <Text>Type</Text>
           <View style={styles.typesContainer}>
             <TouchableOpacity
@@ -227,7 +234,9 @@ class SubmitListing extends React.Component {
             style={[styles.input, styles.descriptionInput]}
             onChangeText={this.onChangeTextDescription}
             blurOnSubmit={false}
+            maxLength={500}
           />
+          <Text style={styles.descriptionTotal}>{this.state.descriptionTotalCharacters} / 500</Text>
           <TouchableOpacity
             style={styles.buttonContainer}
             underlayColor="blue"
@@ -294,6 +303,11 @@ const styles = StyleSheet.create({
   },
   secondaryTypeButtonSelected: {
     backgroundColor: 'purple',
+  },
+  descriptionTotal: {
+    textAlign: 'right',
+    color: '#000',
+    fontSize: 12,
   },
 });
 

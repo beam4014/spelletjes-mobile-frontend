@@ -28,6 +28,7 @@ class ListingRow extends React.Component {
               </Text>
 
           </View>
+          <Text style={[styles.text, styles.gameTitle]}>{this.props.listing.game_title}</Text>
           {
             this.props.listing.asking_price
               ? <Text style={styles.text}>{this.props.listing.asking_price.toString()} EUR</Text>

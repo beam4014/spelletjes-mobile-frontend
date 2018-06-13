@@ -16,6 +16,7 @@ class ListingScreen extends React.Component {
     this.offers = this.props.listing.listingOffers.data;
 
     this.onPressEdit = this.onPressEdit.bind(this);
+    this.onPressDelete = this.onPressDelete.bind(this);
     this.onPressReport = this.onPressReport.bind(this);
   }
   onPressEdit(listing) {
@@ -54,6 +55,18 @@ class ListingScreen extends React.Component {
         backgroundBlur: 'dark',
         tapBackgroundToDismiss: true,
       },
+    });
+  }
+  onPressDelete(listingId) {
+    this.props.delete(listingId).then(()=> {
+      if (this.props.deleted) {
+        this.props.navigator.pop();
+        setTimeout(() => {
+          Alert.alert('Successfully deleted!');
+        }, 300);
+      } else {
+        Alert.alert('Something went wrong');
+      }
     });
   }
   onPressReport() {
@@ -121,12 +134,16 @@ class ListingScreen extends React.Component {
                   <Text>{offer.text}</Text>
 
                   <Text style={styles.date}>{moment(offer.created_at.data).fromNow()}</Text>
-                  <TouchableOpacity
-                    style={styles.acceptButtonContainer}
-                    onPress={() => this.onPressAcceptOffer(offer.id)}
-                  >
-                    <Text style={styles.buttonText}>ACCEPT OFFER</Text>
-                  </TouchableOpacity>
+                  {
+                    this.props.authenticatedUser.id === this.listing.user.data.id
+                    ? <TouchableOpacity
+                      style={styles.acceptButtonContainer}
+                      onPress={() => this.onPressAcceptOffer(offer.id)}
+                    >
+                      <Text style={styles.buttonText}>ACCEPT OFFER</Text>
+                      </TouchableOpacity>
+                    : false
+                  }
                   <View style={styles.lineStyle} />
                 </View>
               ))
@@ -150,6 +167,17 @@ class ListingScreen extends React.Component {
                 onPress={() => this.onPressEdit(this.props.listing)}
               >
                 <Text style={styles.buttonText}>EDIT</Text>
+              </TouchableOpacity>
+              : false
+          }
+          {
+            this.props.authenticatedUser.id === this.listing.user.data.id
+              ? <TouchableOpacity
+                style={styles.editButtonContainer}
+                underlayColor="red"
+                onPress={() => this.onPressDelete(this.props.listing.id)}
+              >
+                <Text style={styles.buttonText}>DELETE</Text>
               </TouchableOpacity>
               : false
           }
@@ -268,12 +296,14 @@ function mapStateToProps(state) {
     authenticatedUser: state.authentication.user,
     listingReported: state.listings.listingReported,
     offerAccepted: state.offers.offerAccepted,
+    deleted: state.listings.deleted
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     reportListing: bindActionCreators(listingsAction.reportListing, dispatch),
     acceptOffer: bindActionCreators(offerAction.acceptOffer, dispatch),
+    delete: bindActionCreators(listingsAction.deleteListing, dispatch),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ListingScreen);
